@@ -1,3 +1,3 @@
-public class test{
+public static class test {
 
 }
