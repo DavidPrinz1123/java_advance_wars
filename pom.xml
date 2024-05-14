@@ -58,7 +58,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>org.apps.java_advance_wars/org.apps.java_advance_wars.HelloApplication</mainClass>
+              <mainClass>org.apps.java_advance_wars/org.apps.java_advance_wars.AdvanceWarsApplication</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
