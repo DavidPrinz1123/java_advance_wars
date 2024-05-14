@@ -21,3 +21,4 @@ public class AdvanceWarsApplication extends Application {
         launch();
     }
 }
+/*TESTTEST*/
