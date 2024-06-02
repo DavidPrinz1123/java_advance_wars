@@ -1,5 +1,7 @@
 package main.java;
 
+import main.MapManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,28 +11,16 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 public class ScalableMap extends JPanel {
-    private static final int HORIZONTAL_TILES = 19;
-    private static final int VERTICAL_TILES = 10;
-    private BufferedImage[][] mapImages = new BufferedImage[VERTICAL_TILES][HORIZONTAL_TILES];
     private static final int TILE_SIZE = 50;
+    private BufferedImage[][] mapImages;
     private Map<String, BufferedImage> imageMap = new HashMap<>();
+    private String[][] mapLayout;
 
-    private String[][] mapLayout = {
-            {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water"},
-            {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "grass", "wood", "grass", "grass", "grass", "wood", "water"},
-            {"water", "water", "water", "mountain water", "water", "water", "water", "water", "grass", "turn right down", "street h", "street h", "street h", "street h", "street h", "street h", "little village", "grass", "water"},
-            {"water", "water", "water", "water", "water", "water", "water", "mountain", "grass", "street v", "grass", "wood", "grass", "grass", "grass", "grass", "grass", "grass", "water"},
-            {"water", "water", "water", "water", "water", "wood", "grass", "wood", "wood", "street v", "grass", "grass", "grass", "wood", "grass", "wood", "grass", "water", "water"},
-            {"water", "water", "wood", "grass", "grass", "grass", "wood", "grass", "grass", "street v", "wood", "wood", "wood", "grass", "water", "water", "water", "water","water"},
-            {"water", "grass", "grass", "grass", "grass", "grass", "wood", "wood", "grass", "street v", "grass", "mountain", "water", "water", "water", "water", "water", "water", "water"},
-            {"water", "grass", "little village", "street h", "street h", "street h", "street h", "street h", "street h", "turn left up", "grass", "water", "water", "mountain water", "water", "water", "water", "water", "water"},
-            {"water", "wood", "grass", "grass", "grass", "wood", "grass", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water"},
-            {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water"}
-    };
-
-    public ScalableMap() {
+    public ScalableMap(int mapNumber) {
+        MapManager mapManager = new MapManager(mapNumber);
+        this.mapLayout = mapManager.getCurrentMap();
         loadImages();
-        loadMap();
+        loadMap(mapLayout.length, mapLayout[0].length); // Pass actual dimensions
     }
 
     private void loadImages() {
@@ -54,9 +44,12 @@ public class ScalableMap extends JPanel {
         }
     }
 
-    private void loadMap() {
-        for (int i = 0; i < VERTICAL_TILES; i++) {
-            for (int j = 0; j < HORIZONTAL_TILES; j++) {
+    private void loadMap(int verticalTiles, int horizontalTiles) {
+        // Allocate based on actual map size
+        mapImages = new BufferedImage[verticalTiles][horizontalTiles];
+
+        for (int i = 0; i < verticalTiles; i++) {
+            for (int j = 0; j < horizontalTiles; j++) {
                 String imageName = mapLayout[i][j];
                 mapImages[i][j] = imageMap.get(imageName);
                 if (mapImages[i][j] == null) {
@@ -69,11 +62,15 @@ public class ScalableMap extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int tileWidth = getWidth() / HORIZONTAL_TILES;
-        int tileHeight = getHeight() / VERTICAL_TILES;
 
-        for (int i = 0; i < VERTICAL_TILES; i++) {
-            for (int j = 0; j < HORIZONTAL_TILES; j++) {
+        // Calculate tile dimensions based on actual map size and component size
+        int verticalTiles = mapLayout.length;
+        int horizontalTiles = mapLayout[0].length;
+        int tileWidth = getWidth() / horizontalTiles;
+        int tileHeight = getHeight() / verticalTiles;
+
+        for (int i = 0; i < verticalTiles; i++) {
+            for (int j = 0; j < horizontalTiles; j++) {
                 if (mapImages[i][j] != null) {
                     g.drawImage(mapImages[i][j], j * tileWidth, i * tileHeight, tileWidth, tileHeight, this);
                 } else {
@@ -88,7 +85,11 @@ public class ScalableMap extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Scalable Map");
-        ScalableMap scalableMap = new ScalableMap();
+        String[] options = {"Little Island", "Eon Springs", "Piston Dam"};
+        int choice = JOptionPane.showOptionDialog(null, "Choose a map", "Map Selection",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        ScalableMap scalableMap = new ScalableMap(choice + 1);
         frame.add(scalableMap);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
