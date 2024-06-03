@@ -1,6 +1,4 @@
-package main.java;
-
-import main.MapManager;
+package org.apps.java_advance_wars;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,11 +28,13 @@ public class ScalableMap extends JPanel {
                 "turn left up", "turn right down", "turn right up", "water", "wood"
         };
 
+        ClassLoader classLoader = getClass().getClassLoader();
         for (String imageName : imageFiles) {
             try {
-                BufferedImage img = ImageIO.read(getClass().getResource("/main/resources/" + imageName + ".png"));
-                imageMap.put(imageName, img);
-                if (img == null) {
+                BufferedImage img = ImageIO.read(classLoader.getResource("main/resources/" + imageName + ".png"));
+                if (img != null) {
+                    imageMap.put(imageName, img);
+                } else {
                     System.err.println("Image not found: " + imageName);
                 }
             } catch (IOException e) {

@@ -1,8 +1,8 @@
-package main;
+package org.apps.java_advance_wars;
 
-import main.maps.LittleIsland;
-import main.maps.EonSprings;
-import main.maps.PistonDam;
+import org.apps.java_advance_wars.maps.LittleIsland;
+import org.apps.java_advance_wars.maps.EonSprings;
+import org.apps.java_advance_wars.maps.PistonDam;
 
 public class MapManager {
     private String[][] currentMap;
@@ -27,3 +27,4 @@ public class MapManager {
         return currentMap;
     }
 }
+
