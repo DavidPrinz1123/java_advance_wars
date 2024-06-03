@@ -1,4 +1,4 @@
-package main.maps;
+package org.apps.java_advance_wars.maps;
 
 public class EonSprings {
     public static final String[][] LAYOUT = {
