@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ScrollPane?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.apps.advancewars.controllers.GameSceneController" fx:id="scrollPane">
+    <content>
+        <GridPane fx:id="gameGridPane"/>
+    </content>
+</ScrollPane>

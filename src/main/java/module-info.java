@@ -6,4 +6,6 @@ module org.apps.advancewars {
 
     opens org.apps.advancewars to javafx.fxml;
     exports org.apps.advancewars;
+    exports org.apps.advancewars.controllers;
+    opens org.apps.advancewars.controllers to javafx.fxml;
 }

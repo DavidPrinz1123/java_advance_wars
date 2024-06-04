@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.apps.advancewars.controllers.MainMenuController" spacing="10" alignment="CENTER">
+    <children>
+        <Button text="Start Game" fx:id="startGameButton" onAction="#handleStartGame"/>
+        <Button text="Exit Game" onAction="#handleExitGame"/>
+    </children>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

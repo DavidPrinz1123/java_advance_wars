@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.apps.advancewars.controllers.MapSelectionController" spacing="10" alignment="CENTER">
+    <children>
+        <HBox spacing="10" alignment="CENTER">
+            <children>
+                <Button text="EonSprings" fx:id="eonSpringsButton" onAction="#handleEonSprings"/>
+                <Button text="LittleIsland" fx:id="littleIslandButton" onAction="#handleLittleIsland"/>
+                <Button text="PistonDam" fx:id="pistonDamButton" onAction="#handlePistonDam"/>
+            </children>
+        </HBox>
+        <ImageView fx:id="mapImageView" fitWidth="400" fitHeight="400"/>
+    </children>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>
