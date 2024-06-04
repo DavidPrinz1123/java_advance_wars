@@ -20,8 +20,8 @@ public class GameSceneController {
     public void setMapLayout(String mapName, Stage stage) {
         gameGridPane = new GridPane();
         String[][] layout = getMapLayout(mapName);
-        double initialSceneWidth = 1280;
-        double initialSceneHeight = 960;
+        double initialSceneWidth = 853;
+        double initialSceneHeight = 640;
 
         for (int row = 0; row < layout.length; row++) {
             for (int col = 0; col < layout[row].length; col++) {
