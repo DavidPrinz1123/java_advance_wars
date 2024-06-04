@@ -15,7 +15,7 @@ public class MainApp extends Application {
     private static String selectedMapName;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         MainApp.primaryStage = primaryStage;
         showMainMenu();
     }
@@ -47,9 +47,8 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/GameScene.fxml"));
             Parent root = loader.load();
             GameSceneController controller = loader.getController();
-            controller.setMapLayout(mapName);
-            primaryStage.setScene(new Scene(root));
-            primaryStage.setTitle(mapName);
+            Stage stage = new Stage();
+            controller.setMapLayout(mapName, stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
