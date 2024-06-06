@@ -66,4 +66,12 @@ public abstract class unit {
         int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
         return distance <= movementRange;
     }
+
+    public boolean isInfantry() {
+        return false;
+    }
+
+    public boolean isAirUnit() {
+        return false;
+    }
 }
