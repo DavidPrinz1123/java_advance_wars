@@ -56,7 +56,7 @@ public class MapController {
                 imageView.setFitWidth(TILE_SIZE);
                 imageView.setFitHeight(TILE_SIZE);
                 gameGridPane.add(imageView, col, row);
-                System.out.println("Added terrain: " + terrainName + " at (" + row + ", " + col + ") with image " + terrain.getImageFileName());
+
             }
         }
     }

@@ -61,6 +61,12 @@ public class UnitController {
             return false;
         }
 
+        // Check if the unit can move to the destination within its movement range
+        if (!unit.canMoveTo(row, col)) {
+            return false;
+        }
+
+        // Check if the terrain is passable
         Terrain terrain = mapController.getTerrainAt(row, col);
         if (unit.isAirUnit()) {
             return terrain.isPassableByAirUnits();
