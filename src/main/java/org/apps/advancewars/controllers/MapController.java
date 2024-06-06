@@ -62,11 +62,11 @@ public class MapController {
     }
 
     private Image getImageForTerrain(Terrain terrain) {
-        String imagePath = "/org/apps/advancewars/images/" + terrain.getImageFileName();
+        String imagePath = "/org/apps/advancewars/images/map/" + terrain.getImageFileName();
         URL imageUrl = getClass().getResource(imagePath);
         if (imageUrl == null) {
             System.err.println("Image not found for terrain: " + terrain.getName() + " with path: " + imagePath);
-            return new Image(getClass().getResource("/org/apps/advancewars/images/default.png").toExternalForm());  // Fallback to a default image
+            return new Image(getClass().getResource("/org/apps/advancewars/images/map/default.png").toExternalForm());  // Fallback to a default image
         }
         return new Image(imageUrl.toExternalForm());
     }
