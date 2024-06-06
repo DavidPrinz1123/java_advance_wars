@@ -4,5 +4,9 @@ public class Fighter extends unit {
     public Fighter() {
         super("Fighter", 100, 40, 9, "/org/apps/advancewars/images/fighter.png");
     }
+    @Override
+    public boolean isAirUnit() {
+        return true;
+    }
 }
 
