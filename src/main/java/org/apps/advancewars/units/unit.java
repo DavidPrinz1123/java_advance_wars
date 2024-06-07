@@ -2,6 +2,10 @@ package org.apps.advancewars.units;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apps.advancewars.terrain.Terrain;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class unit {
     protected String name;
@@ -12,12 +16,15 @@ public abstract class unit {
     protected int row;
     protected int col;
     protected String team;
+    protected Map<String, Integer> movementCosts; // Movement costs for different terrain types
 
     public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
         this.movementRange = movementRange;
+        this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
+        this.movementCosts = new HashMap<>();
         this.team = team;
         try {
             this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
@@ -86,4 +93,14 @@ public abstract class unit {
     public boolean isAirUnit() {
         return false;
     }
+
+
+    // Method to calculate movement cost based on terrain
+    public int getMovementCost(Terrain terrain) {
+        // Check if the unit has a specific movement cost for this terrain
+        Integer cost = movementCosts.get(terrain.getName());
+        // If not found, return the default movement cost
+        return cost != null ? cost : 1;
+    }
 }
+

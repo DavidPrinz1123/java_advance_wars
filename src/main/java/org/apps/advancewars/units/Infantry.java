@@ -10,3 +10,4 @@ public class Infantry extends unit {
         return true;
     }
 }
+
