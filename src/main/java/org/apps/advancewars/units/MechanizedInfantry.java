@@ -1,8 +1,8 @@
 package org.apps.advancewars.units;
 
 public class MechanizedInfantry extends unit {
-    public MechanizedInfantry() {
-        super("Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/mech.png");
+    public MechanizedInfantry(String team) {
+        super("Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/" + team +"/mech.png", team);
     }
 
     @Override

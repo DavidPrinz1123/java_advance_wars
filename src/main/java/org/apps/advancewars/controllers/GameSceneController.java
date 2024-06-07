@@ -18,14 +18,14 @@ public class GameSceneController {
         mapController.setMapLayout(mapName);
 
         // Example placement of units
-        unitController.placeUnit(new Fighter(), 1, 1);
-        unitController.placeUnit(new Infantry(), 1, 2);
-        unitController.placeUnit(new BattleCopter(), 1, 3);
-        unitController.placeUnit(new Bomber(), 1, 4);
-        unitController.placeUnit(new MechanizedInfantry(), 1, 5);
-        unitController.placeUnit(new AntiAir(), 1, 6);
-        unitController.placeUnit(new MobileArtillery(), 1, 7);
-        unitController.placeUnit(new Tank(), 1, 8);
+        unitController.placeUnit(new Fighter("teamred"), 1, 1);
+        unitController.placeUnit(new Infantry("teamblue"), 1, 2);
+        unitController.placeUnit(new BattleCopter("teamred"), 1, 3);
+        unitController.placeUnit(new Bomber("teamblue"), 1, 4);
+        unitController.placeUnit(new MechanizedInfantry("teamred"), 1, 5);
+        unitController.placeUnit(new AntiAir("teamblue"), 1, 6);
+        unitController.placeUnit(new MobileArtillery("teamred"), 1, 7);
+        unitController.placeUnit(new Tank("teamblue"), 1, 8);
 
 
 

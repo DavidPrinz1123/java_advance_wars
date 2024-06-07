@@ -11,13 +11,21 @@ public abstract class unit {
     protected ImageView imageView;
     protected int row;
     protected int col;
+    protected String team;
 
-    public unit(String name, int health, int attackPower, int movementRange, String imagePath) {
+    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
         this.movementRange = movementRange;
-        this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
+        this.team = team;
+        try {
+            this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
+        } catch (Exception e) {
+            System.err.println("Error loading image: " + imagePath);
+            e.printStackTrace();
+            this.imageView = new ImageView(); // Provide a default ImageView or handle as needed
+        }
     }
 
     public String getName() {
@@ -50,6 +58,10 @@ public abstract class unit {
 
     public int getCol() {
         return col;
+    }
+
+    public String getTeam() {
+        return team;
     }
 
     public void setPosition(int row, int col) {
