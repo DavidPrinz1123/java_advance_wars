@@ -14,4 +14,14 @@ public class BattleCopter extends unit {
     public boolean isAirUnit() {
         return true;
     }
+
+    @Override
+    public boolean canAttackGroundUnit() {
+        return true;
+    }
+
+    @Override
+    public boolean canAttackAirUnit() {
+        return true;
+    }
 }

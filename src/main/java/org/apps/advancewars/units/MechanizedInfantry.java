@@ -15,4 +15,14 @@ public class MechanizedInfantry extends unit {
     public boolean isAirUnit() {
         return false;
     }
+
+    @Override
+    public boolean canAttackGroundUnit() {
+        return true;
+    }
+
+    @Override
+    public boolean canAttackAirUnit() {
+        return false;
+    }
 }

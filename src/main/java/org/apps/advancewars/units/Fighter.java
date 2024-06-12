@@ -14,5 +14,15 @@ public class Fighter extends unit {
     public boolean isAirUnit() {
         return true;
     }
+
+    @Override
+    public boolean canAttackGroundUnit() {
+        return false;
+    }
+
+    @Override
+    public boolean canAttackAirUnit() {
+        return true;
+    }
 }
 
