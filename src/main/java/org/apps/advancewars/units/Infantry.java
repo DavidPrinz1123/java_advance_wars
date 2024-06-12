@@ -5,9 +5,15 @@ public class Infantry extends unit {
         super("Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/" + team + "/infantry.png", team);
     }
 
+
     @Override
-    public boolean isInfantry() {
+    public boolean isGroundUnit() {
         return true;
+    }
+
+    @Override
+    public boolean isAirUnit() {
+        return false;
     }
 }
 

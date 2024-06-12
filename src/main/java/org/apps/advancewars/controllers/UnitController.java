@@ -72,7 +72,7 @@ public class UnitController {
         int movementCost = unit.getMovementCost(terrain);
         if (unit.isAirUnit()) {
             return terrain.isPassableByAirUnits() && unit.getMovementRange() >= movementCost;
-        } else if (unit.isInfantry()) {
+        } else if (unit.isGroundUnit()) {
             return terrain.isPassableByInfantry() && unit.getMovementRange() >= movementCost;
         } else {
             return terrain.isPassableByGroundUnits() && unit.getMovementRange() >= movementCost;

@@ -6,6 +6,11 @@ public class BattleCopter extends unit {
     }
 
     @Override
+    public boolean isGroundUnit() {
+        return false;
+    }
+
+    @Override
     public boolean isAirUnit() {
         return true;
     }

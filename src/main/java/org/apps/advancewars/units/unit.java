@@ -86,13 +86,9 @@ public abstract class unit {
         return distance <= movementRange;
     }
 
-    public boolean isInfantry() {
-        return false;
-    }
+    abstract public boolean isGroundUnit();
 
-    public boolean isAirUnit() {
-        return false;
-    }
+    abstract public boolean isAirUnit();
 
 
     // Method to calculate movement cost based on terrain
