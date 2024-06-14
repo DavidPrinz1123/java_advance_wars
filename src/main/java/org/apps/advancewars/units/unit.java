@@ -94,6 +94,10 @@ public abstract class unit {
 
     abstract public boolean canAttackAirUnit();
 
+    public boolean isInfantry() {
+        return false;
+    }
+
 
     // Method to calculate movement cost based on terrain
     public int getMovementCost(Terrain terrain) {

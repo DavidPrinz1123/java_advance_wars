@@ -5,9 +5,14 @@ public class MechanizedInfantry extends unit {
         super("Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/" + team +"/mech.png", team);
     }
 
-
+    //Wenn isGroundUnit is true, dann kann die Infantry nicht mehr auf die Berge
     @Override
     public boolean isGroundUnit() {
+        return false;
+    }
+
+    @Override
+    public boolean isInfantry() {
         return true;
     }
 

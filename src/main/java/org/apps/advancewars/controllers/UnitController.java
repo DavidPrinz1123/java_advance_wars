@@ -73,8 +73,11 @@ public class UnitController {
         if (unit.isAirUnit()) {
             return terrain.isPassableByAirUnits() && unit.getMovementRange() >= movementCost;
         } else if (unit.isGroundUnit()) {
+            return terrain.isPassableByGroundUnits() && unit.getMovementRange() >= movementCost;
+        } else if (unit.isInfantry()) {
             return terrain.isPassableByInfantry() && unit.getMovementRange() >= movementCost;
-        } else {
+        }
+        else {
             return terrain.isPassableByGroundUnits() && unit.getMovementRange() >= movementCost;
         }
     }
