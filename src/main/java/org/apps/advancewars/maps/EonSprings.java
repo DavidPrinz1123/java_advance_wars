@@ -2,7 +2,7 @@ package org.apps.advancewars.maps;
 
 public class EonSprings {
     public static final String[][] LAYOUT = {
-            {"wood", "grass", "grass", "grass", "wood", "bridge h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "turn left down", "grass", "wood"},
+            {"grass", "grass", "grass", "grass", "wood", "bridge h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "street h", "turn left down", "grass", "wood"},
             {"grass", "grass", "grass", "grass", "water", "water", "mountain", "wood", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "little village", "grass", "grass"},
             {"grass", "grass","grass", "grass", "water", "water", "water", "wood", "grass", "grass", "grass", "grass", "wood", "grass", "grass", "grass", "street v", "grass", "wood"},
             {"grass", "grass", "wood", "water", "water", "water", "water", "water", "wood", "wood", "water", "water", "grass", "grass", "grass", "wood", "street v", "grass", "grass"},

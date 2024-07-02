@@ -15,10 +15,11 @@ public abstract class unit {
     protected ImageView imageView;
     protected int row;
     protected int col;
+    protected boolean blocked;
     protected String team;
     protected Map<String, Integer> movementCosts; // Movement costs for different terrain types
 
-    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team) {
+    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team, boolean blocked) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
@@ -26,6 +27,7 @@ public abstract class unit {
         this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         this.movementCosts = new HashMap<>();
         this.team = team;
+        this.blocked = blocked;
         try {
             this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         } catch (Exception e) {
@@ -74,6 +76,13 @@ public abstract class unit {
     public void setPosition(int row, int col) {
         this.row = row;
         this.col = col;
+    }
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
     }
 
     public void move(int newRow, int newCol) {

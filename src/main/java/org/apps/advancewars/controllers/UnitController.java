@@ -15,6 +15,7 @@ public class UnitController {
     private Map<String, unit> units;
     private unit selectedUnit;
     private MapController mapController;
+    private String player = "teamred";
 
     public UnitController(GridPane gameGridPane, int tileSize, MapController mapController) {
         this.gameGridPane = gameGridPane;
@@ -41,8 +42,11 @@ public class UnitController {
             selectedUnit = getUnitAt(row, col);
         } else {
             // Try to move the selected unit
-            if (canMoveTo(selectedUnit, row, col)) {
+            if (canMoveTo(selectedUnit, row, col)&& !selectedUnit.isBlocked()&& selectedUnit.getTeam().equals(player)) {
                 moveUnit(selectedUnit, row, col);
+                if(areAllUnitsBlocked()){
+                    changePlayer();
+                }
             }
             selectedUnit = null; // Deselect the unit after moving
         }
@@ -91,5 +95,36 @@ public class UnitController {
 
         // Add the unit to the new position in the map
         units.put(unit.getName() + newRow + "_" + newCol, unit);
+        unit.setBlocked(true);
     }
+    public boolean areAllUnitsBlocked() {
+        for (Map.Entry<String, unit> entry : units.entrySet()) {
+            unit unit = entry.getValue();
+            if (unit.getTeam().equals(player) && !unit.isBlocked()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void unblockUnits(){
+        for (Map.Entry<String, unit> entry : units.entrySet()) {
+            unit unit = entry.getValue();
+            if(unit.getTeam().equals(player)){
+                unit.setBlocked(false);
+            }
+
+        }
+    }
+    public void changePlayer() {
+        if (player.equals("teamred")) {
+            player = "teamblue";
+
+        }
+        else if (player.equals("teamblue")) {
+            player = "teamred";
+        }
+        unblockUnits();
+    }
+
 }
