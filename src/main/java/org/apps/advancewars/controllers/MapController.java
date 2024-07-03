@@ -40,7 +40,9 @@ public class MapController {
         terrainMap.put("street_v", new Terrain("street_v", "street_v.png", true, true, true, false));
         terrainMap.put("turn_left_down", new Terrain("turn_left_down", "turn_left_down.png", true, true, true, false));
         terrainMap.put("turn_left_up", new Terrain("turn_left_up", "turn_left_up.png", true, true, true, false));
+        terrainMap.put("turn_left_up_water", new Terrain("turn_left_up_water", "turn_left_up_water.png", true, true, true, false));
         terrainMap.put("turn_right_down", new Terrain("turn_right_down", "turn_right_down.png", true, true, true, false));
+        terrainMap.put("turn_right_down_water", new Terrain("turn_right_down_water", "turn_right_down_water.png", true, true, true, false));
         terrainMap.put("turn_right_up", new Terrain("turn_right_up", "turn_right_up.png", true, true, true, false));
     }
 
