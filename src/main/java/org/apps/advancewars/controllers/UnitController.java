@@ -60,27 +60,18 @@ public class UnitController {
     }
 
     private boolean canMoveTo(unit unit, int row, int col) {
+        Terrain terrain = mapController.getTerrainAt(row, col);
         // Check if there is no other unit at the destination
         if (getUnitAt(row, col) != null) {
             return false;
         }
 
         // Check if the unit can move to the destination within its movement range
-        if (!unit.canMoveTo(row, col)) {
+        if (!unit.canMoveTo(row, col,terrain)) {
             return false;
         }
+        return unit.canMoveTo(row, col, terrain);
 
-        // Check if the terrain is passable
-        Terrain terrain = mapController.getTerrainAt(row, col);
-        // Check movement cost based on terrain
-        int movementCost = unit.getMovementCost(terrain);
-        if (unit.isAirUnit()) {
-            return terrain.isPassableByAirUnits() && unit.getMovementRange() >= movementCost;
-        } else if (unit.isInfantry()) {
-            return terrain.isPassableByInfantry() && unit.getMovementRange() >= movementCost;
-        } else {
-            return terrain.isPassableByGroundUnits() && unit.getMovementRange() >= movementCost;
-        }
     }
 
 

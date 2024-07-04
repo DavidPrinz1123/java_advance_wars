@@ -11,23 +11,35 @@ public abstract class unit {
     protected String name;
     protected int health;
     protected int attackPower;
+    protected int minAttackRange;
+    protected int maxAttackRange;
+    protected boolean attackAir = false;
+    protected boolean attackGround = false;
     protected int movementRange;
+    protected int movementCosts [] = new int [4];
     protected ImageView imageView;
     protected int row;
     protected int col;
     protected boolean blocked;
     protected String team;
-    protected Map<String, Integer> movementCosts; // Movement costs for different terrain types
 
-    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team, boolean blocked) {
+
+    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team, boolean blocked, int movementWood, int movementPlain, int movementSea, int movementMountain, int minAttackRange, int maxAttackRange,int atackPossibilitys) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
         this.movementRange = movementRange;
         this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
-        this.movementCosts = new HashMap<>();
         this.team = team;
         this.blocked = blocked;
+        this.movementCosts[0] = movementWood;
+        this.movementCosts[1] = movementPlain;
+        this.movementCosts[2] = movementSea;
+        this.movementCosts[3] = movementMountain;
+        this.minAttackRange = minAttackRange;
+        this.maxAttackRange = maxAttackRange;
+        attackAir = checkAir(atackPossibilitys);
+        attackAir = checkGround(atackPossibilitys);
         try {
             this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         } catch (Exception e) {
@@ -39,6 +51,13 @@ public abstract class unit {
 
     public String getName() {
         return name;
+    }
+
+    public int getMinAttackRange(){
+     return minAttackRange;
+    }
+    public int getMaxAttackRange(){
+        return maxAttackRange;
     }
 
     public int getHealth() {
@@ -90,26 +109,49 @@ public abstract class unit {
         // Additional logic to update the UI can be added here
     }
 
-    public boolean canMoveTo(int newRow, int newCol) {
+    public boolean canMoveTo(int newRow, int newCol,Terrain terrain) {
         int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
-        return distance <= movementRange;
+        int movementCosts = getMovementCost(terrain);
+        int newDistance = distance + movementCosts - 1;
+        return newDistance <= movementRange;
     }
 
-    public boolean isInfantry() {
-        return false;
-    }
 
-    public boolean isAirUnit() {
-        return false;
-    }
 
 
     // Method to calculate movement cost based on terrain
     public int getMovementCost(Terrain terrain) {
-        // Check if the unit has a specific movement cost for this terrain
-        Integer cost = movementCosts.get(terrain.getName());
-        // If not found, return the default movement cost
-        return cost != null ? cost : 1;
+        int costs;
+        switch (terrain.getName()) {
+            case "water":
+                costs = movementCosts[2];
+                break;
+            case "mountain":
+                costs = movementCosts[3];
+                break;
+            case "wood":
+                costs = movementCosts[0];
+                break;
+
+            default:
+                costs = movementCosts[1];
+                break;
+        }
+        return costs;
+    }
+
+    public boolean checkAir(int attackPossibilitys) {
+    if(attackPossibilitys==1 || attackPossibilitys == 3){
+        return true;
+    }
+        return false;
+    }
+
+    public boolean checkGround(int attackPossibilitys) {
+        if(attackPossibilitys==2 || attackPossibilitys == 3){
+            return true;
+        }
+        return false;
     }
 }
 
