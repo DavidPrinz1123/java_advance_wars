@@ -5,10 +5,15 @@ public class Infantry extends unit {
         super("Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/" + team + "/infantry.png", team);
     }
 
+    // Wenn isGroundUnit is true, dann kann die Infantry nicht mehr auf die Berge
+    @Override
+    public boolean isInfantry() {
+            return true;
+    }
 
     @Override
     public boolean isGroundUnit() {
-        return true;
+        return false   ;
     }
 
     @Override
