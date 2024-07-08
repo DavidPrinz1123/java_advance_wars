@@ -1,44 +1,68 @@
 package org.apps.advancewars.controllers;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.apps.advancewars.MainApp;
 import org.apps.advancewars.units.*;
+
+import java.io.IOException;
 
 public class GameSceneController {
 
     private MapController mapController;
     private UnitController unitController;
+    private GameHUDController hudController;
 
     public void setMapLayout(String mapName, Stage stage) {
+        BorderPane mainLayout = new BorderPane();
         GridPane gameGridPane = new GridPane();
+        mainLayout.setCenter(gameGridPane);
+
         mapController = new MapController(gameGridPane);
         unitController = new UnitController(gameGridPane, mapController.getTileSize(), mapController);
-
         mapController.setMapLayout(mapName);
 
-        // Place troops differently based on the selected map
-        switch (mapName) {
-            case "EonSprings":
-                placeEonSpringsTroops();
-                break;
-            case "LittleIsland":
-                placeLittleIslandTroops();
-                break;
-            case "PistonDam":
-                placePistonDamTroops();
-                break;
-            default:
-                System.err.println("Unknown map: " + mapName);
-                break;
+        // Load the HUD
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/GameHUD.fxml"));
+            Parent hudRoot = loader.load();
+            hudController = loader.getController();
+            mainLayout.setBottom(hudRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ensure hudController is initialized before calling its methods
+        if (hudController != null) {
+            // Place troops differently based on the selected map
+            switch (mapName) {
+                case "EonSprings":
+                    placeEonSpringsTroops();
+                    break;
+                case "LittleIsland":
+                    placeLittleIslandTroops();
+                    break;
+                case "PistonDam":
+                    placePistonDamTroops();
+                    break;
+                default:
+                    System.err.println("Unknown map: " + mapName);
+                    break;
+            }
+        } else {
+            System.err.println("Failed to load HUD controller");
         }
 
         // Calculate the initial scene size based on the map dimensions
         double initialSceneWidth = mapController.getMapLayout(mapName)[0].length * mapController.getTileSize();
-        double initialSceneHeight = mapController.getMapLayout(mapName).length * mapController.getTileSize();
+        double initialSceneHeight = mapController.getMapLayout(mapName).length * mapController.getTileSize() + 100; // Added extra height for HUD
 
-        // Set the scene with the GridPane
-        Scene scene = new Scene(gameGridPane, initialSceneWidth, initialSceneHeight);
+        // Set the scene with the main layout
+        Scene scene = new Scene(mainLayout, initialSceneWidth, initialSceneHeight);
         stage.setScene(scene);
         stage.setTitle(mapName);
         stage.setMinWidth(initialSceneWidth);
@@ -59,6 +83,9 @@ public class GameSceneController {
         unitController.placeUnit(new AntiAir("teamblue"), 1, 6);
         unitController.placeUnit(new MobileArtillery("teamred"), 1, 7);
         unitController.placeUnit(new Tank("teamblue"), 1, 8);
+
+        hudController.updateTeamRedInfo("Eon Springs Team Red Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
+        hudController.updateTeamBlueInfo("Eon Springs Team Blue Units: Infantry, Bomber, Anti-Air, Tank");
     }
 
     private void placeLittleIslandTroops() {
@@ -70,6 +97,9 @@ public class GameSceneController {
         unitController.placeUnit(new AntiAir("teamred"), 2, 6);
         unitController.placeUnit(new MobileArtillery("teamblue"), 2, 7);
         unitController.placeUnit(new Tank("teamred"), 2, 8);
+
+        hudController.updateTeamRedInfo("Little Island Team Red Units: Infantry, Bomber, Anti-Air, Tank");
+        hudController.updateTeamBlueInfo("Little Island Team Blue Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
     }
 
     private void placePistonDamTroops() {
@@ -81,5 +111,8 @@ public class GameSceneController {
         unitController.placeUnit(new AntiAir("teamblue"), 3, 6);
         unitController.placeUnit(new MobileArtillery("teamred"), 3, 7);
         unitController.placeUnit(new Tank("teamblue"), 3, 8);
+
+        hudController.updateTeamRedInfo("Piston Dam Team Red Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
+        hudController.updateTeamBlueInfo("Piston Dam Team Blue Units: Infantry, Bomber, Anti-Air, Tank");
     }
 }
