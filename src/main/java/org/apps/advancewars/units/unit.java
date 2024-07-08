@@ -17,6 +17,8 @@ public abstract class unit {
     protected int col;
     protected String team;
     protected Map<String, Integer> movementCosts; // Movement costs for different terrain types
+    protected boolean movedThisTurn;
+    protected boolean attackedThisTurn;
 
     public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team) {
         this.name = name;
@@ -75,9 +77,21 @@ public abstract class unit {
         this.row = row;
         this.col = col;
     }
+    public boolean getMovedThisTurn() {return movedThisTurn;}
+
+    public boolean getAttackThisTurn() {return attackedThisTurn;}
+
+    public void setAttackedThisTurn(boolean attackedThisTurn) {
+        this.attackedThisTurn = attackedThisTurn;
+    }
+    public void setMovedThisTurn (boolean movedThisTurn) {
+        this.movedThisTurn = movedThisTurn;
+    }
 
     public void move(int newRow, int newCol) {
+        if (!canMoveTo(newRow, newCol)) return;
         setPosition(newRow, newCol);
+        movedThisTurn = true;
         // Additional logic to update the UI can be added here
     }
 
@@ -102,5 +116,6 @@ public abstract class unit {
         // If not found, return the default movement cost
         return cost != null ? cost : 1;
     }
-}
 
+
+}
