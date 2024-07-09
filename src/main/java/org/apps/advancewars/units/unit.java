@@ -3,7 +3,6 @@ package org.apps.advancewars.units;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apps.advancewars.terrain.Terrain;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,14 +10,22 @@ public abstract class unit {
     protected String name;
     protected int health;
     protected int attackPower;
+    protected int minAttackRange;
+    protected int maxAttackRange;
+    protected boolean attackAir = false;
+    protected boolean attackMiddle = false;
+    protected boolean attackGround = false;
     protected int movementRange;
     protected ImageView imageView;
     protected int row;
     protected int col;
+
+    protected boolean movementBlocked = false;
+    protected boolean attackBlocked = false;
     protected String team;
     protected Map<String, Integer> movementCosts; // Movement costs for different terrain types
-    protected boolean movedThisTurn;
-    protected boolean attackedThisTurn;
+
+
 
     public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team) {
         this.name = name;
@@ -39,6 +46,14 @@ public abstract class unit {
 
     public String getName() {
         return name;
+    }
+
+    public int getMinAttackRange() {
+        return minAttackRange;
+    }
+
+    public int getMaxAttackRange() {
+        return maxAttackRange;
     }
 
     public int getHealth() {
@@ -77,27 +92,34 @@ public abstract class unit {
         this.row = row;
         this.col = col;
     }
-    public boolean getMovedThisTurn() {return movedThisTurn;}
 
-    public boolean getAttackThisTurn() {return attackedThisTurn;}
-
-    public void setAttackedThisTurn(boolean attackedThisTurn) {
-        this.attackedThisTurn = attackedThisTurn;
+    public void setMovementBlocked(boolean blocked) {
+        this.movementBlocked = blocked;
     }
-    public void setMovedThisTurn (boolean movedThisTurn) {
-        this.movedThisTurn = movedThisTurn;
+
+    public boolean getMovementBlocked() {
+        return movementBlocked;
+    }
+
+    public void setAttackBlocked(boolean attackBlocked) {
+        this.attackBlocked = attackBlocked;
+    }
+
+    public boolean getAttackBlocked() {
+        return attackBlocked;
     }
 
     public void move(int newRow, int newCol) {
-        if (!canMoveTo(newRow, newCol)) return;
         setPosition(newRow, newCol);
-        movedThisTurn = true;
         // Additional logic to update the UI can be added here
     }
 
-    public boolean canMoveTo(int newRow, int newCol) {
+    public boolean canMoveTo(int newRow, int newCol, Terrain terrain) {
         int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
-        return distance <= movementRange;
+        int movementCosts = getMovementCost(terrain);
+        int newDistance = distance + movementCosts - 1;
+        return newDistance <= movementRange;
+
     }
 
     abstract public boolean isGroundUnit();
@@ -112,14 +134,27 @@ public abstract class unit {
         return false;
     }
 
+    public boolean canAttack(unit enemy,int newRow, int newCol) {
+        int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
+        return distance >= getMinAttackRange() && distance <= getMaxAttackRange()&&!getAttackBlocked();
+    }
 
     // Method to calculate movement cost based on terrain
     public int getMovementCost(Terrain terrain) {
-        // Check if the unit has a specific movement cost for this terrain
-        Integer cost = movementCosts.get(terrain.getName());
-        // If not found, return the default movement cost
-        return cost != null ? cost : 1;
+        switch (terrain.getName()) {
+            case "water":
+                return movementCosts[2];
+            case "mountain":
+                return movementCosts[3];
+            case "wood":
+                return movementCosts[0];
+            default:
+                return movementCosts[1];
+        }
     }
 
-
+    public void reset() {
+        this.movementBlocked = false;
+        this.attackBlocked = false;
+    }
 }

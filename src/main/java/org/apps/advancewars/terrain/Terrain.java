@@ -47,12 +47,7 @@ public class Terrain {
         return providesCover;
     }
 
-    public void setMovementCost(String unitType, int cost) {
-        movementCosts.put(unitType, cost);
-    }
 
-    public int getMovementCost(String unitType) {
-        Integer cost = movementCosts.get(unitType);
-        return cost != null ? cost : 1; // Default movement cost
-    }
+
+
 }
