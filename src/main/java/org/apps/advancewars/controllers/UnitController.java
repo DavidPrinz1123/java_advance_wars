@@ -14,6 +14,7 @@ public class UnitController {
     private GridPane gameGridPane;
     private Map<String, unit> units;
     private unit selectedUnit;
+    private unit selectedField;
     private MapController mapController;
     private String player = "teamred";
 
@@ -31,26 +32,75 @@ public class UnitController {
         imageView.setFitWidth(TILE_SIZE);
         imageView.setFitHeight(TILE_SIZE);
         gameGridPane.add(imageView, col, row);
+
     }
 
     public void handleMouseClick(MouseEvent event) {
         int col = (int) (event.getX() / TILE_SIZE);
         int row = (int) (event.getY() / TILE_SIZE);
 
-        if (selectedUnit == null) {
+     //   if (selectedUnit == null) {
             // Select a unit if one is at the clicked position
-            selectedUnit = getUnitAt(row, col);
-        } else {
-            // Try to move the selected unit
-            if (canMoveTo(selectedUnit, row, col)&& !selectedUnit.isBlocked()&& selectedUnit.getTeam().equals(player)) {
-                moveUnit(selectedUnit, row, col);
-                if(areAllUnitsBlocked()){
-                    changePlayer();
-                }
-            }
-            selectedUnit = null; // Deselect the unit after moving
-        }
+       //     selectedUnit = getUnitAt(row, col);
+      //  } else {
+       //     unit enemyUnit = getUnitAt(row, col);
+       //     if(enemyUnit==null&&canMoveTo(selectedUnit, row, col)&& !selectedUnit.getMovementBlocked()){
+        //        moveUnit(selectedUnit, row, col);
+          //  }
+         //   if(enemyUnit!=null) {
+
+          //      if (enemyUnit.getTeam() != player && selectedUnit.canAttack(enemyUnit, row, col) && !selectedUnit.getAttackBlocked()) {
+             //       attack(enemyUnit, selectedUnit);
+             //   } else if (enemyUnit.getTeam() == player) {
+              //      selectedUnit = enemyUnit;
+                    //Hier werden auf der Benutzeroberfläche aktuelle Truppeninfos ausgegeben
+                    //z.B Label.setText("Die Truppe hat noch " + selectedUnit.getHealth + "Leben"
+            //    }
+           // }
+            // Versuchen die ausgewählte truppe zu bewegen
+         //   if (selectedUnit.getTeam().equals(player)) {
+
+           //     if(areAllUnitsBlocked()){
+            //        changePlayer();
+            //    }
+          //  }
+          //  selectedUnit = null; // Truppe wieder abwählen
+       // }
+        //}
+if(selectedUnit==null&&getUnitAt(row, col)!=null){
+if(getUnitAt(row, col).getTeam()==player){
+    selectedUnit = getUnitAt(row,col);
+}
+//Anzeigen von Daten
+}
+else if(selectedUnit!=null){
+    selectedField = getUnitAt(row,col);
+    //Anzeigen von Daten
+    if(selectedField == null&&canMoveTo(selectedUnit, row, col)&& !selectedUnit.getMovementBlocked()){
+        //bewegen
+
+        moveUnit(selectedUnit,row,col);
+        selectedUnit=null;
+        selectedField=null;
+
     }
+    else if(selectedField!=null&&selectedField.getTeam()!=player&& selectedUnit.canAttack(selectedField, row, col) && !selectedUnit.getAttackBlocked()){
+        //angreifen
+
+        attack(selectedField,selectedUnit);
+        selectedUnit=null;
+        selectedField=null;
+    }
+    else if(selectedField!=null && selectedField.getTeam()==player){
+        selectedUnit = selectedField;
+        selectedField = null;
+    }
+    if(areAllUnitsBlocked()&&!canAnyAttack()){
+               changePlayer();
+            }
+}
+    }
+
 
     private unit getUnitAt(int row, int col) {
         return units.values().stream()
@@ -86,12 +136,12 @@ public class UnitController {
 
         // Add the unit to the new position in the map
         units.put(unit.getName() + newRow + "_" + newCol, unit);
-        unit.setBlocked(true);
+        unit.setMovementBlocked(true);
     }
     public boolean areAllUnitsBlocked() {
         for (Map.Entry<String, unit> entry : units.entrySet()) {
             unit unit = entry.getValue();
-            if (unit.getTeam().equals(player) && !unit.isBlocked()) {
+            if (unit.getTeam().equals(player) && !unit.getMovementBlocked()) {
                 return false;
             }
         }
@@ -102,7 +152,7 @@ public class UnitController {
         for (Map.Entry<String, unit> entry : units.entrySet()) {
             unit unit = entry.getValue();
             if(unit.getTeam().equals(player)){
-                unit.setBlocked(false);
+                unit.reset();
             }
 
         }
@@ -116,6 +166,45 @@ public class UnitController {
             player = "teamred";
         }
         unblockUnits();
+    }
+    public void attack(unit defensive,unit offensive){
+        defensive.setHealth(defensive.getHealth()-offensive.getAttackPower());
+        offensive.setAttackBlocked(true);
+    }
+    public boolean canAnyAttack() {
+        // Durchsuche alle Einheiten auf der Karte
+        for (Map.Entry<String, unit> entry : units.entrySet()) {
+            unit ownUnit = entry.getValue();
+
+
+            if (ownUnit.getTeam().equals(player) && !ownUnit.getAttackBlocked()) {
+                int row = ownUnit.getRow();
+                int col = ownUnit.getCol();
+                int minAttackRange = ownUnit.getMinAttackRange();
+                int maxAttackRange = ownUnit.getMaxAttackRange();
+
+                // Prüfe in alle Richtungen innerhalb der Angriffsreichweite
+                for (int i = -maxAttackRange; i <= maxAttackRange; i++) {
+                    for (int j = -maxAttackRange; j <= maxAttackRange; j++) {
+                        if (Math.abs(i) + Math.abs(j) < minAttackRange || Math.abs(i) + Math.abs(j) > maxAttackRange) continue; // Angriffsreichweite prüfen
+
+                        int targetRow = row + i;
+                        int targetCol = col + j;
+
+                        // Überprüfen, ob die Zielposition innerhalb der Grenzen der Karte liegt
+                        if (mapController.isWithinBounds(targetRow, targetCol)) {
+                            unit targetUnit = getUnitAt(targetRow, targetCol);
+
+                            // Prüfe, ob die Zielposition eine gegnerische Einheit enthält
+                            if (targetUnit != null && !targetUnit.getTeam().equals(player) && ownUnit.canAttack(targetUnit, targetRow, targetCol)) {
+                                return true; // Eine Einheit kann angreifen
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false; // Keine Einheit kann angreifen
     }
 
 }

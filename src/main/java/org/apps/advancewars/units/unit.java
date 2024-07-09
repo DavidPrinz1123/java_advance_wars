@@ -4,9 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apps.advancewars.terrain.Terrain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class unit {
     protected String name;
     protected int health;
@@ -14,32 +11,34 @@ public abstract class unit {
     protected int minAttackRange;
     protected int maxAttackRange;
     protected boolean attackAir = false;
+    protected boolean attackMiddle = false;
     protected boolean attackGround = false;
     protected int movementRange;
-    protected int movementCosts [] = new int [4];
+    protected int movementCosts[] = new int[4];
     protected ImageView imageView;
     protected int row;
     protected int col;
-    protected boolean blocked;
+    protected int troopCategory;
+    protected boolean movementBlocked = false;
+    protected boolean attackBlocked = false;
     protected String team;
 
-
-    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team, boolean blocked, int movementWood, int movementPlain, int movementSea, int movementMountain, int minAttackRange, int maxAttackRange,int atackPossibilitys) {
+    public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team, int movementWood, int movementPlain, int movementSea, int movementMountain, int minAttackRange, int maxAttackRange, boolean canAttackGround, boolean canAttackMiddle, boolean canAttackAir, int troopCategory) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
         this.movementRange = movementRange;
-        this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         this.team = team;
-        this.blocked = blocked;
         this.movementCosts[0] = movementWood;
         this.movementCosts[1] = movementPlain;
         this.movementCosts[2] = movementSea;
         this.movementCosts[3] = movementMountain;
         this.minAttackRange = minAttackRange;
         this.maxAttackRange = maxAttackRange;
-        attackAir = checkAir(atackPossibilitys);
-        attackAir = checkGround(atackPossibilitys);
+        this.attackGround = canAttackGround;
+        this.attackMiddle = canAttackMiddle;
+        this.attackAir = canAttackAir;
+        this.troopCategory = troopCategory;
         try {
             this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         } catch (Exception e) {
@@ -53,10 +52,11 @@ public abstract class unit {
         return name;
     }
 
-    public int getMinAttackRange(){
-     return minAttackRange;
+    public int getMinAttackRange() {
+        return minAttackRange;
     }
-    public int getMaxAttackRange(){
+
+    public int getMaxAttackRange() {
         return maxAttackRange;
     }
 
@@ -76,6 +76,10 @@ public abstract class unit {
         return movementRange;
     }
 
+    public int getTroopCategory() {
+        return troopCategory;
+    }
+
     public ImageView getImageView() {
         return imageView;
     }
@@ -88,6 +92,10 @@ public abstract class unit {
         return col;
     }
 
+    public boolean[] getAttackPossibilities() {
+        return new boolean[]{attackGround, attackMiddle, attackAir};
+    }
+
     public String getTeam() {
         return team;
     }
@@ -96,12 +104,21 @@ public abstract class unit {
         this.row = row;
         this.col = col;
     }
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+
+    public void setMovementBlocked(boolean blocked) {
+        this.movementBlocked = blocked;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public boolean getMovementBlocked() {
+        return movementBlocked;
+    }
+
+    public void setAttackBlocked(boolean attackBlocked) {
+        this.attackBlocked = attackBlocked;
+    }
+
+    public boolean getAttackBlocked() {
+        return attackBlocked;
     }
 
     public void move(int newRow, int newCol) {
@@ -109,49 +126,34 @@ public abstract class unit {
         // Additional logic to update the UI can be added here
     }
 
-    public boolean canMoveTo(int newRow, int newCol,Terrain terrain) {
+    public boolean canMoveTo(int newRow, int newCol, Terrain terrain) {
         int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
         int movementCosts = getMovementCost(terrain);
         int newDistance = distance + movementCosts - 1;
         return newDistance <= movementRange;
     }
 
-
-
+    public boolean canAttack(unit enemy,int newRow, int newCol) {
+        int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
+        return distance >= getMinAttackRange() && distance <= getMaxAttackRange()&&!getAttackBlocked();
+    }
 
     // Method to calculate movement cost based on terrain
     public int getMovementCost(Terrain terrain) {
-        int costs;
         switch (terrain.getName()) {
             case "water":
-                costs = movementCosts[2];
-                break;
+                return movementCosts[2];
             case "mountain":
-                costs = movementCosts[3];
-                break;
+                return movementCosts[3];
             case "wood":
-                costs = movementCosts[0];
-                break;
-
+                return movementCosts[0];
             default:
-                costs = movementCosts[1];
-                break;
+                return movementCosts[1];
         }
-        return costs;
     }
 
-    public boolean checkAir(int attackPossibilitys) {
-    if(attackPossibilitys==1 || attackPossibilitys == 3){
-        return true;
-    }
-        return false;
-    }
-
-    public boolean checkGround(int attackPossibilitys) {
-        if(attackPossibilitys==2 || attackPossibilitys == 3){
-            return true;
-        }
-        return false;
+    public void reset() {
+        this.movementBlocked = false;
+        this.attackBlocked = false;
     }
 }
-

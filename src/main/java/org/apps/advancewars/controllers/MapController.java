@@ -17,10 +17,15 @@ public class MapController {
     private GridPane gameGridPane;
     private Map<String, Terrain> terrainMap;
     private String currentMapName;
+    private int mapWidth;
+    private int mapHeight;
 
     public MapController(GridPane gameGridPane) {
         this.gameGridPane = gameGridPane;
+        this.mapWidth = (int) (gameGridPane.getWidth() / TILE_SIZE);
+        this.mapHeight = (int) (gameGridPane.getHeight() / TILE_SIZE);
         initializeTerrainMap();
+
     }
 
     private void initializeTerrainMap() {
@@ -92,5 +97,9 @@ public class MapController {
         String[][] layout = getMapLayout(currentMapName);
         String terrainName = layout[row][col].replace(" ", "_").toLowerCase();
         return terrainMap.getOrDefault(terrainName, terrainMap.get("grass"));
+    }
+
+    public boolean isWithinBounds(int row, int col) {
+        return row >= 0 && row < mapHeight && col >= 0 && col < mapWidth;
     }
 }
