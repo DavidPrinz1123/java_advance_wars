@@ -156,9 +156,15 @@ public class UnitController {
     public void changePlayer() {
         if (player.equals("teamred")) {
             player = "teamblue";
-
+            if(checkRedWinner()){
+                //ToDO Graphikteam muss Siegerscreen hier implementieren
+            }
         } else if (player.equals("teamblue")) {
             player = "teamred";
+            if(checkBlueWinner()){
+                //ToDO Graphikteam muss Siegerscreen hier implementieren
+            }
+
         }
         unblockUnits();
     }
