@@ -16,6 +16,7 @@ public class UnitController {
     private unit selectedUnit;
     private MapController mapController;
 
+
     public UnitController(GridPane gameGridPane, int tileSize, MapController mapController) {
         this.gameGridPane = gameGridPane;
         this.TILE_SIZE = tileSize;
@@ -47,7 +48,17 @@ public class UnitController {
             selectedUnit = null; // Deselect the unit after moving
         }
     }
-
+    public String checkWinner(){
+        if (checkRedWinner()) return "teamred";
+        if (checkBlueWinner()) return "teamblue";
+        return "";
+    }
+    private boolean checkRedWinner(){
+        return units.values().stream().noneMatch(unit -> unit.getTeam() == "teamblue");
+    }
+    private boolean checkBlueWinner(){
+        return units.values().stream().noneMatch(unit -> unit.getTeam() == "teamred");
+    }
     private unit getUnitAt(int row, int col) {
         return units.values().stream()
                 .filter(unit -> unit.getRow() == row && unit.getCol() == col)
