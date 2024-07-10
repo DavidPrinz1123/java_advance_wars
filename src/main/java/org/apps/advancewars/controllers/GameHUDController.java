@@ -1,22 +1,30 @@
 package org.apps.advancewars.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
 public class GameHUDController {
 
     @FXML
     private VBox teamRedInfo;
 
+
     @FXML
     private VBox teamBlueInfo;
 
-    // Add methods to update HUD information as needed
+
     public void updateTeamRedInfo(String info) {
-        // Update the teamRedInfo VBox with the new info
+
+        teamRedInfo.getChildren().clear();
+        Label infoLabel = new Label(info);
+        teamRedInfo.getChildren().add(infoLabel);
     }
 
+    // Methode zum Aktualisieren der teamBlueInfo VBox
     public void updateTeamBlueInfo(String info) {
-        // Update the teamBlueInfo VBox with the new info
+
+        teamBlueInfo.getChildren().clear();
+        Label infoLabel = new Label(info);
+        teamBlueInfo.getChildren().add(infoLabel);
     }
 }

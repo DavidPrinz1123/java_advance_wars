@@ -16,6 +16,8 @@ public class UnitController {
     private unit selectedUnit;
     private unit selectedField;
     private MapController mapController;
+    private GameSceneController gameScene = new GameSceneController();
+    private GameHUDController gHC;
     private String player = "teamred";
 
     public UnitController(GridPane gameGridPane, int tileSize, MapController mapController) {
@@ -23,6 +25,7 @@ public class UnitController {
         this.TILE_SIZE = tileSize;
         this.units = new HashMap<>();
         this.mapController = mapController;
+        this.gHC = gameScene.getHUDcontroller();
     }
 
     public void placeUnit(unit unit, int row, int col) {
@@ -39,36 +42,44 @@ public class UnitController {
         int row = (int) (event.getY() / TILE_SIZE);
 
 
-if(selectedUnit==null&&getUnitAt(row, col)!=null){
-if(getUnitAt(row, col).getTeam()==player){
-    selectedUnit = getUnitAt(row,col);
-}
+        if (selectedUnit == null && getUnitAt(row, col) != null) {
+            if (getUnitAt(row, col).getTeam() == player) {
+                selectedUnit = getUnitAt(row, col);
+            }
 //Anzeigen von Daten
-}
-else if(selectedUnit!=null){
-    selectedField = getUnitAt(row,col);
-    //Anzeigen von Daten
-    if(selectedField == null&&canMoveTo(selectedUnit, row, col)&& !selectedUnit.getMovementBlocked()){
-        //bewegen
+         //   if(player.equals("teamred")){
+          //      gHC.updateTeamRedInfo(makeInfoString(selectedUnit));
+          //  }else{
+           //     gHC.updateTeamBlueInfo(makeInfoString(selectedUnit));
+          //  }
+        } else if (selectedUnit != null) {
+            selectedField = getUnitAt(row, col);
+            //Anzeigen von Daten
+        //    if(player.equals("teamred")){
+        //        gHC.updateTeamBlueInfo(makeInfoString(selectedUnit));
+        //    }else{
+           //     gHC.updateTeamRedInfo(makeInfoString(selectedUnit));
+         //   }
 
-        moveUnit(selectedUnit,row,col);
-        selectedUnit=null;
-        selectedField=null;
+            if (selectedField == null && canMoveTo(selectedUnit, row, col) && !selectedUnit.getMovementBlocked()) {
+                //bewegen
 
-    }
-    else if(selectedField!=null&&selectedField.getTeam()!=player&& selectedUnit.canAttack(selectedField, row, col) && !selectedUnit.getAttackBlocked()){
-        //angreifen
+                moveUnit(selectedUnit, row, col);
+                selectedUnit = null;
+                selectedField = null;
 
-        attack(selectedField,selectedUnit);
-        selectedUnit=null;
-        selectedField=null;
-    }
-    else if(selectedField!=null && selectedField.getTeam()==player){
-        selectedUnit = selectedField;
-        selectedField = null;
-    }
-    if(areAllUnitsBlocked()&&!canAnyAttack()){
-               changePlayer();
+            } else if (selectedField != null && selectedField.getTeam() != player && selectedUnit.canAttack(selectedField, row, col) && !selectedUnit.getAttackBlocked()) {
+                //angreifen
+
+                attack(selectedField, selectedUnit);
+                selectedUnit = null;
+                selectedField = null;
+            } else if (selectedField != null && selectedField.getTeam() == player) {
+                selectedUnit = selectedField;
+                selectedField = null;
+            }
+            if (areAllUnitsBlocked() && !canAnyAttack()) {
+                changePlayer();
             }
             selectedUnit = null; // Deselect the unit after moving
         }
@@ -84,29 +95,15 @@ else if(selectedUnit!=null){
     private boolean canMoveTo(unit unit, int row, int col) {
         Terrain terrain = mapController.getTerrainAt(row, col);
         // Check if there is no other unit at the destination
-        if (getUnitAt(row, col) != null) {
-            return false;
-        }
-
-        // Check if the unit can move to the destination within its movement range
-        if (!unit.canMoveTo(row, col,terrain)) {
-            return false;
-        }
-        return unit.canMoveTo(row, col, terrain);
-
-        // Check if the terrain is passable
-        Terrain terrain = mapController.getTerrainAt(row, col);
+        //ToDo überlegen wie man dijkstra implementiert
         // Check movement cost based on terrain
         int movementCost = unit.getMovementCost(terrain);
         if (unit.isAirUnit()) {
-            return terrain.isPassableByAirUnits() && unit.getMovementRange() >= movementCost;
+            return unit.getMovementRange() >= movementCost&&unit.canMoveTo(row,col,terrain);
         } else if (unit.isGroundUnit()) {
-            return terrain.isPassableByGroundUnits() && unit.getMovementRange() >= movementCost;
-        } else if (unit.isInfantry()) {
-            return terrain.isPassableByInfantry() && unit.getMovementRange() >= movementCost;
-        }
-        else {
-            return terrain.isPassableByGroundUnits() && unit.getMovementRange() >= movementCost;
+            return unit.getMovementRange() >= movementCost&&unit.canMoveTo(row,col,terrain);
+        } else {
+            return unit.getMovementRange() >= movementCost&&unit.canMoveTo(row,col,terrain);
         }
     }
 
@@ -124,6 +121,7 @@ else if(selectedUnit!=null){
         units.put(unit.getName() + newRow + "_" + newCol, unit);
         unit.setMovementBlocked(true);
     }
+
     public boolean areAllUnitsBlocked() {
         for (Map.Entry<String, unit> entry : units.entrySet()) {
             unit unit = entry.getValue();
@@ -134,29 +132,58 @@ else if(selectedUnit!=null){
         return true;
     }
 
-    public void unblockUnits(){
+    public void unblockUnits() {
         for (Map.Entry<String, unit> entry : units.entrySet()) {
             unit unit = entry.getValue();
-            if(unit.getTeam().equals(player)){
+            if (unit.getTeam().equals(player)) {
                 unit.reset();
             }
 
         }
     }
+
     public void changePlayer() {
         if (player.equals("teamred")) {
             player = "teamblue";
 
-        }
-        else if (player.equals("teamblue")) {
+        } else if (player.equals("teamblue")) {
             player = "teamred";
         }
         unblockUnits();
     }
-    public void attack(unit defensive,unit offensive){
-        defensive.setHealth(defensive.getHealth()-offensive.getAttackPower());
+
+    public void attack(unit defensive, unit offensive) {
+        String attackedUnit = defensive.getName();
+        double modifier = 0;
+        switch (attackedUnit) {
+            case "Anti Air": modifier = offensive.getAntiAirModifier();
+                break;
+            case "BattleCopter": modifier = offensive.getBattleCopterModifier();
+                break;
+            case "Bomber": modifier = offensive.getBomberModifier();
+                break;
+            case "Fighter": modifier = offensive.getFighterModifier();
+                break;
+            case "Infantry": modifier = offensive.getInfantryModifier();
+                break;
+            case "Mechanized Infantry": modifier = offensive.getMechanizedInfantryModifier();
+                break;
+            case "Mobile Artillery": modifier = offensive.getMobileArtilleryModifier();
+                break;
+            case "Tank": modifier = offensive.getTankModifier();
+                break;
+            default:
+                break;
+        }
+        double attackpower = offensive.getAttackPower()*modifier;
+        int roundedAttackPower = (int) attackpower;
+        defensive.setHealth(defensive.getHealth() - roundedAttackPower);
         offensive.setAttackBlocked(true);
+        if(defensive.getHealth() <= 0) {
+            units.remove(defensive.getName() + defensive.getRow() + "_" + defensive.getCol(), defensive);
+        }
     }
+
     public boolean canAnyAttack() {
         // Durchsuche alle Einheiten auf der Karte
         for (Map.Entry<String, unit> entry : units.entrySet()) {
@@ -172,7 +199,8 @@ else if(selectedUnit!=null){
                 // Prüfe in alle Richtungen innerhalb der Angriffsreichweite
                 for (int i = -maxAttackRange; i <= maxAttackRange; i++) {
                     for (int j = -maxAttackRange; j <= maxAttackRange; j++) {
-                        if (Math.abs(i) + Math.abs(j) < minAttackRange || Math.abs(i) + Math.abs(j) > maxAttackRange) continue; // Angriffsreichweite prüfen
+                        if (Math.abs(i) + Math.abs(j) < minAttackRange || Math.abs(i) + Math.abs(j) > maxAttackRange)
+                            continue; // Angriffsreichweite prüfen
 
                         int targetRow = row + i;
                         int targetCol = col + j;
@@ -192,3 +220,27 @@ else if(selectedUnit!=null){
         }
         return false; // Keine Einheit kann angreifen
     }
+    public String makeInfoString(unit infoUnit){
+        String infoString = "";
+        String unitName = "Einheit : " + infoUnit.getName();
+        String unitHealth = "Besitzt : " + infoUnit.getHealth() + " Leben ! ";
+        String unitPower = "Hat eine Angriffsstärke von : " + infoUnit.getAttackPower() + " Punkten ";
+        String unitMovement = "Kann auf normalem Gebiet " + infoUnit.getMovementRange() + " Felder gehen ";
+        String unitOperationArea;
+        if(infoUnit.canAttackGroundUnit()&&!infoUnit.canAttackAirUnit()){
+            unitOperationArea = "Wird gegen Bodentruppen eingesetzt ";
+        }
+        else if(!infoUnit.canAttackGroundUnit()&&infoUnit.canAttackAirUnit()){
+            unitOperationArea = "Wird gegen Lufttruppen eingesetzt ";
+        }
+        else{
+            unitOperationArea = "Wird gegen Luft - und Bodentruppen eingesetzt ";
+        }
+        infoString = unitName + "\n" +
+                unitHealth + "\n" +
+                unitPower + "\n" +
+                unitMovement + "\n" +
+                unitOperationArea;
+        return infoString;
+    }
+}

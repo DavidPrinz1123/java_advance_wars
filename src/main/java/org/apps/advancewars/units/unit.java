@@ -124,15 +124,31 @@ public abstract class unit {
 
     abstract public boolean isGroundUnit();
 
+
+
     abstract public boolean isAirUnit();
 
     abstract public boolean canAttackGroundUnit();
 
+
+
     abstract public boolean canAttackAirUnit();
 
-    public boolean isInfantry() {
-        return false;
-    }
+    abstract public int getWaterMovementCosts();
+    abstract public int getPlainMovementCosts();
+    abstract public int getWoodMovementCosts();
+    abstract public int getMountainMovementCosts();
+
+    abstract public double getAntiAirModifier();
+    abstract public double getBattleCopterModifier();
+    abstract public double getBomberModifier();
+    abstract public double getFighterModifier();
+    abstract public double getInfantryModifier();
+    abstract public double getMechanizedInfantryModifier();
+    abstract public double getMobileArtilleryModifier();
+    abstract public double getTankModifier();
+
+
 
     public boolean canAttack(unit enemy,int newRow, int newCol) {
         int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
@@ -143,13 +159,13 @@ public abstract class unit {
     public int getMovementCost(Terrain terrain) {
         switch (terrain.getName()) {
             case "water":
-                return movementCosts[2];
+                return getWaterMovementCosts();
             case "mountain":
-                return movementCosts[3];
+                return getMountainMovementCosts();
             case "wood":
-                return movementCosts[0];
+                return getWoodMovementCosts();
             default:
-                return movementCosts[1];
+                return getPlainMovementCosts();
         }
     }
 

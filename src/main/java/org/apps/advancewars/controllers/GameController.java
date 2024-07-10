@@ -32,8 +32,8 @@ public GameController(String player1name, String player2name) {
 
     private void checkPlayerUnits(List<unit> units) {
         for (unit unit : units) {
-            if (unit.getMovedThisTurn() || unit.getAttackThisTurn()) {
-                System.out.println("Unit " + unit.getName() + " has played (moved: " + unit.getMovedThisTurn() + ", attacked: " + unit.getAttackThisTurn() + ").");
+            if (unit.getMovementBlocked() || unit.getAttackBlocked()) {
+                System.out.println("Unit " + unit.getName() + " has played (moved: " + unit.getMovementBlocked() + ", attacked: " + unit.getAttackBlocked() + ").");
             } else {
                 System.out.println("Unit " + unit.getName() + " has not played.");
             }
