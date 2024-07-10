@@ -23,7 +23,7 @@
             <Button text="Button 1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <Button text="Button 2" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <Button text="Button 3" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Button text="Button 4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="exitGameButton" text="Exit Game" onAction="#handleExitGame" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <columnConstraints>
                 <ColumnConstraints />
                 <ColumnConstraints />
