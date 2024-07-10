@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apps.advancewars.controllers.GameSceneController;
+import org.apps.advancewars.controllers.VictoryScreenController;
 
 import java.io.IOException;
 
@@ -53,6 +54,21 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
+
+    public static void showVictoryScreen(String winningTeam) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/VictoryScreen.fxml"));
+            Parent root = loader.load();
+            VictoryScreenController controller = loader.getController();
+            controller.setWinningTeam(winningTeam);
+            primaryStage.setScene(new Scene(root));
+            primaryStage.setTitle("Victory!");
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static String getSelectedMapName() {
         return selectedMapName;

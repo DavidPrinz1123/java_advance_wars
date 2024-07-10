@@ -3,11 +3,14 @@ package org.apps.advancewars.controllers;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import org.apps.advancewars.MainApp;
 import org.apps.advancewars.units.unit;
 import org.apps.advancewars.terrain.Terrain;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apps.advancewars.MainApp.showVictoryScreen;
 
 public class UnitController {
     private final int TILE_SIZE;
@@ -160,50 +163,52 @@ public class UnitController {
     public void changePlayer() {
         if (player.equals("teamred")) {
             player = "teamblue";
-            if(checkRedWinner()){
-                //ToDO Graphikteam muss Siegerscreen hier implementieren
+            if (checkRedWinner()) {
+                showVictoryScreen("teamred");
             }
         } else if (player.equals("teamblue")) {
             player = "teamred";
-            if(checkBlueWinner()){
-                //ToDO Graphikteam muss Siegerscreen hier implementieren
+            if (checkBlueWinner()) {
+                showVictoryScreen("teamblue");
             }
-
         }
         unblockUnits();
     }
+
 
     public void attack(unit defensive, unit offensive) {
         String attackedUnit = defensive.getName();
         double modifier = 0;
         switch (attackedUnit) {
-            case "Anti Air": modifier = offensive.getAntiAirModifier();
-                break;
-            case "BattleCopter": modifier = offensive.getBattleCopterModifier();
-                break;
-            case "Bomber": modifier = offensive.getBomberModifier();
-                break;
-            case "Fighter": modifier = offensive.getFighterModifier();
-                break;
-            case "Infantry": modifier = offensive.getInfantryModifier();
-                break;
-            case "Mechanized Infantry": modifier = offensive.getMechanizedInfantryModifier();
-                break;
-            case "Mobile Artillery": modifier = offensive.getMobileArtilleryModifier();
-                break;
-            case "Tank": modifier = offensive.getTankModifier();
-                break;
-            default:
-                break;
+            case "Anti Air": modifier = offensive.getAntiAirModifier(); break;
+            case "BattleCopter": modifier = offensive.getBattleCopterModifier(); break;
+            case "Bomber": modifier = offensive.getBomberModifier(); break;
+            case "Fighter": modifier = offensive.getFighterModifier(); break;
+            case "Infantry": modifier = offensive.getInfantryModifier(); break;
+            case "Mechanized Infantry": modifier = offensive.getMechanizedInfantryModifier(); break;
+            case "Mobile Artillery": modifier = offensive.getMobileArtilleryModifier(); break;
+            case "Tank": modifier = offensive.getTankModifier(); break;
+            default: break;
         }
-        double attackpower = offensive.getAttackPower()*modifier;
+        double attackpower = offensive.getAttackPower() * modifier;
         int roundedAttackPower = (int) attackpower;
         defensive.setHealth(defensive.getHealth() - roundedAttackPower);
         offensive.setAttackBlocked(true);
-        if(defensive.getHealth() <= 0) {
+        if (defensive.getHealth() <= 0) {
             units.remove(defensive.getName() + defensive.getRow() + "_" + defensive.getCol(), defensive);
+            gameGridPane.getChildren().remove(defensive.getImageView());
+            checkVictory(); // Check if the game is over after removing a unit
         }
     }
+
+    private void checkVictory() {
+        if (checkRedWinner()) {
+            showVictoryScreen("teamred");
+        } else if (checkBlueWinner()) {
+            showVictoryScreen("teamblue");
+        }
+    }
+
 
     public boolean canAnyAttack() {
         // Durchsuche alle Einheiten auf der Karte
