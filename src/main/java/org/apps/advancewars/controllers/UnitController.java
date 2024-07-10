@@ -29,6 +29,10 @@ public class UnitController {
         this.gHC = gameScene.getHUDcontroller();
     }
 
+    public void setGameController(GameHUDController gameController) {
+        gameController.setUnitController(this);
+    }
+
     public void placeUnit(unit unit, int row, int col) {
         units.put(unit.getName() + row + "_" + col, unit); // Unique key for each unit
         unit.setPosition(row, col);

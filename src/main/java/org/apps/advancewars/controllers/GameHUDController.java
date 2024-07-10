@@ -19,6 +19,10 @@ public class GameHUDController {
     @FXML
     private Button exitGameButton;
 
+    @FXML
+    private Button handleEndMove;
+
+    private UnitController unitController;
 
     public void updateTeamRedInfo(String info) {
 
@@ -37,6 +41,16 @@ public class GameHUDController {
     public void handleExitGame(ActionEvent event) {
         Stage stage = (Stage) exitGameButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void setUnitController(UnitController unitController) {
+        this.unitController = unitController;
+    }
+
+    @FXML
+    private void handleEndMove(ActionEvent event) {
+        // Change the player turn in UnitController
+        unitController.changePlayer();
     }
 }
 

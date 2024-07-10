@@ -31,6 +31,7 @@ public class GameSceneController {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/GameHUD.fxml"));
             Parent hudRoot = loader.load();
             hudController = loader.getController();
+            hudController.setUnitController(unitController);  // Set the unit controller in HUD controller
             mainLayout.setBottom(hudRoot);
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,7 +114,6 @@ public class GameSceneController {
         unitController.placeUnit(new MobileArtillery("teamred"), 2, 7);
         unitController.placeUnit(new Tank("teamred"), 2, 8);
 
-
         unitController.placeUnit(new Fighter("teamblue"), 2, 15);
         unitController.placeUnit(new Infantry("teamblue"), 2, 14);
         unitController.placeUnit(new Infantry("teamblue"), 3, 16);
@@ -126,9 +126,7 @@ public class GameSceneController {
 
         hudController.updateTeamRedInfo("Little Island Team Red Units: Infantry, Bomber, Anti-Air, Tank");
         hudController.updateTeamBlueInfo("Little Island Team Blue Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
-
     }
-
 
     private void placePistonDamTroops() {
         unitController.placeUnit(new Fighter("teamred"), 3, 0);
@@ -158,8 +156,8 @@ public class GameSceneController {
         hudController.updateTeamRedInfo("Piston Dam Team Red Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
         hudController.updateTeamBlueInfo("Piston Dam Team Blue Units: Infantry, Bomber, Anti-Air, Tank");
     }
-    //Todo hudController überprüfen
-public GameHUDController getHUDcontroller (){
+
+    public GameHUDController getHUDcontroller() {
         return hudController;
-}
+    }
 }
