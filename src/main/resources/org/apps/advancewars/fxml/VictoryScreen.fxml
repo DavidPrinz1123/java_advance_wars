@@ -3,7 +3,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.apps.advancewars.controllers.VictoryScreenController" alignment="CENTER" spacing="20">
+    <ImageView disable="true" fitHeight="477.0" fitWidth="764.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/map/img.png" />
+        </image>
+    </ImageView>
+
     <Label fx:id="victoryLabel" text=""/>
     <Label text="Congratulations!"/>
 </VBox>

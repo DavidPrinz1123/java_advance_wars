@@ -13,8 +13,6 @@ public class MechanizedInfantry extends unit {
         return true;
     }
 
-
-
     @Override
     public boolean isAirUnit() {
         return false;
