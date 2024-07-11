@@ -10,10 +10,10 @@
         <Button fx:id="handleEndMove" onAction="#handleEndMove" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" text="End Turn" />
     </VBox>
     <VBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-        <Button fx:id="surrenderBlueButton" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" text="Surrender Blue" />
+        <Button fx:id="surrenderBlueButton" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px; -fx-background-color: #ec5353;" text="Surrender" />
     </VBox>
     <VBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-        <Button fx:id="surrenderRedButton" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" text="Surrender Red" />
+        <Button fx:id="surrenderRedButton" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px; -fx-background-color: #5353ec;" text="Surrender" />
     </VBox>
     <VBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
         <Button fx:id="exitGameButton" onAction="#handleExitGame" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" text="Exit Game" />
