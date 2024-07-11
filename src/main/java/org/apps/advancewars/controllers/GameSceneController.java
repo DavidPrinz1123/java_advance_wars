@@ -32,6 +32,7 @@ public class GameSceneController {
             Parent hudRoot = loader.load();
             hudController = loader.getController();
             hudController.setUnitController(unitController);  // Set the unit controller in HUD controller
+            hudController.setGameSceneController(this); // Set GameSceneController in HUD controller
             mainLayout.setBottom(hudRoot);
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,24 +106,8 @@ public class GameSceneController {
     }
 
     private void placeLittleIslandTroops() {
-//        unitController.placeUnit(new Fighter("teamred"), 2, 1);
-//        unitController.placeUnit(new Infantry("teamred"), 2, 2);
-//        unitController.placeUnit(new BattleCopter("teamred"), 2, 3);
-//        unitController.placeUnit(new Bomber("teamred"), 2, 4);
-//        unitController.placeUnit(new MechanizedInfantry("teamred"), 2, 5);
-//        unitController.placeUnit(new AntiAir("teamred"), 2, 6);
-//        unitController.placeUnit(new MobileArtillery("teamred"), 2, 7);
-//        unitController.placeUnit(new Tank("teamred"), 2, 8);
-
-        unitController.placeUnit(new Tank("teamblue"), 2, 15);
-        unitController.placeUnit(new Tank("teamred"), 2, 14);
-//        unitController.placeUnit(new Infantry("teamblue"), 3, 16);
-//        unitController.placeUnit(new BattleCopter("teamblue"), 1, 16);
-//        unitController.placeUnit(new Bomber("teamblue"), 4, 16);
-//        unitController.placeUnit(new MechanizedInfantry("teamblue"), 3, 13);
-//        unitController.placeUnit(new AntiAir("teamblue"), 3, 14);
-//        unitController.placeUnit(new MobileArtillery("teamblue"), 2, 12);
-//        unitController.placeUnit(new Tank("teamblue"), 4, 12);
+        unitController.placeUnit(new Infantry("teamblue"), 2, 15);
+        unitController.placeUnit(new Infantry("teamred"), 2, 14);
 
         hudController.updateTeamRedInfo("Little Island Team Red Units: Infantry, Bomber, Anti-Air, Tank");
         hudController.updateTeamBlueInfo("Little Island Team Blue Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
@@ -159,5 +144,20 @@ public class GameSceneController {
 
     public GameHUDController getHUDcontroller() {
         return hudController;
+    }
+
+    public void endGame(String winningTeam, Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/apps/advancewars/fxml/VictoryScreen.fxml"));
+            Parent root = loader.load();
+
+            VictoryScreenController victoryScreenController = loader.getController();
+            victoryScreenController.setWinningTeam(winningTeam);
+
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

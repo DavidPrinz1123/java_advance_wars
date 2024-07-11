@@ -21,8 +21,8 @@
     <VBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS">
         <GridPane hgap="10" vgap="10" alignment="CENTER">
             <Button fx:id="handleEndMove" text="End Turn" onAction="#handleEndMove" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button text="Button 2" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <Button text="Button 3" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Button fx:id="surrenderBlueButton" text="Surrender Blue" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Button fx:id="surrenderRedButton" text="Surrender Red" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <Button fx:id="exitGameButton" text="Exit Game" onAction="#handleExitGame" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <columnConstraints>
                 <ColumnConstraints />

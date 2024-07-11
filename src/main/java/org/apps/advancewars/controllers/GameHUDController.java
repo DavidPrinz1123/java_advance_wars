@@ -28,6 +28,7 @@ public class GameHUDController {
     private Button surrenderRedButton;
 
     private UnitController unitController;
+    private GameSceneController gameSceneController;
 
     @FXML
     public void initialize() {
@@ -41,7 +42,6 @@ public class GameHUDController {
         teamRedInfo.getChildren().add(infoLabel);
     }
 
-    // Methode zum Aktualisieren der teamBlueInfo VBox
     public void updateTeamBlueInfo(String info) {
         teamBlueInfo.getChildren().clear();
         Label infoLabel = new Label(info);
@@ -57,14 +57,17 @@ public class GameHUDController {
         this.unitController = unitController;
     }
 
+    public void setGameSceneController(GameSceneController gameSceneController) {
+        this.gameSceneController = gameSceneController;
+    }
+
     @FXML
     private void handleEndMove(ActionEvent event) {
-        // Change the player turn in UnitController
         unitController.changePlayer();
     }
 
     private void handleSurrender(String team) {
-        GameSceneController gameSceneController = new GameSceneController();
-        gameSceneController.endGame(team);
+        Stage stage = (Stage) surrenderBlueButton.getScene().getWindow(); // Abrufen der aktuellen Stage
+        gameSceneController.endGame(team, stage);
     }
 }
