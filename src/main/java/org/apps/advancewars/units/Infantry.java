@@ -2,16 +2,14 @@ package org.apps.advancewars.units;
 
 public class Infantry extends unit {
     public Infantry(String team) {
-        super("Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/" + team + "/infantry.png", team);
+        super("Infantry", 10, 10, 3, "/org/apps/advancewars/images/troops/" + team + "/infantry.png", team);
+        this.minAttackRange = 1;
+        this.maxAttackRange = 1;
     }
-
-    // Wenn isGroundUnit is true, dann kann die Infantry nicht mehr auf die Berge
-
-
 
     @Override
     public boolean isGroundUnit() {
-        return true   ;
+        return true;
     }
 
     @Override
@@ -89,4 +87,3 @@ public class Infantry extends unit {
         return 0.5;
     }
 }
-

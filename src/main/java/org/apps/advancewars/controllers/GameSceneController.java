@@ -114,8 +114,8 @@ public class GameSceneController {
 //        unitController.placeUnit(new MobileArtillery("teamred"), 2, 7);
 //        unitController.placeUnit(new Tank("teamred"), 2, 8);
 
-        unitController.placeUnit(new Infantry("teamblue"), 2, 15);
-        unitController.placeUnit(new Infantry("teamred"), 2, 14);
+        unitController.placeUnit(new Tank("teamblue"), 2, 15);
+        unitController.placeUnit(new Tank("teamred"), 2, 14);
 //        unitController.placeUnit(new Infantry("teamblue"), 3, 16);
 //        unitController.placeUnit(new BattleCopter("teamblue"), 1, 16);
 //        unitController.placeUnit(new Bomber("teamblue"), 4, 16);
