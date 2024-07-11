@@ -3,6 +3,7 @@ package org.apps.advancewars.units;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apps.advancewars.terrain.Terrain;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,8 +11,8 @@ public abstract class unit {
     protected String name;
     protected int health;
     protected int attackPower;
-    protected int minAttackRange;
-    protected int maxAttackRange;
+    protected int minAttackRange = 1; // Default attack range
+    protected int maxAttackRange = 1; // Default attack range
     protected boolean attackAir = false;
     protected boolean attackMiddle = false;
     protected boolean attackGround = false;
@@ -23,9 +24,7 @@ public abstract class unit {
     protected boolean movementBlocked = false;
     protected boolean attackBlocked = false;
     protected String team;
-    protected Map<String, Integer> movementCosts; // Movement costs for different terrain types
-
-
+    protected Map<String, Integer> movementCosts;
 
     public unit(String name, int health, int attackPower, int movementRange, String imagePath, String team) {
         this.name = name;
@@ -35,13 +34,6 @@ public abstract class unit {
         this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         this.movementCosts = new HashMap<>();
         this.team = team;
-        try {
-            this.imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
-        } catch (Exception e) {
-            System.err.println("Error loading image: " + imagePath);
-            e.printStackTrace();
-            this.imageView = new ImageView(); // Provide a default ImageView or handle as needed
-        }
     }
 
     public String getName() {
@@ -111,7 +103,6 @@ public abstract class unit {
 
     public void move(int newRow, int newCol) {
         setPosition(newRow, newCol);
-        // Additional logic to update the UI can be added here
     }
 
     public boolean canMoveTo(int newRow, int newCol, Terrain terrain) {
@@ -119,43 +110,15 @@ public abstract class unit {
         int movementCosts = getMovementCost(terrain);
         int newDistance = distance + movementCosts - 1;
         return newDistance <= movementRange;
-
     }
 
-    abstract public boolean isGroundUnit();
-
-
-
-    abstract public boolean isAirUnit();
-
-    abstract public boolean canAttackGroundUnit();
-
-
-
-    abstract public boolean canAttackAirUnit();
-
-    abstract public int getWaterMovementCosts();
-    abstract public int getPlainMovementCosts();
-    abstract public int getWoodMovementCosts();
-    abstract public int getMountainMovementCosts();
-
-    abstract public double getAntiAirModifier();
-    abstract public double getBattleCopterModifier();
-    abstract public double getBomberModifier();
-    abstract public double getFighterModifier();
-    abstract public double getInfantryModifier();
-    abstract public double getMechanizedInfantryModifier();
-    abstract public double getMobileArtilleryModifier();
-    abstract public double getTankModifier();
-
-
-
-    public boolean canAttack(unit enemy,int newRow, int newCol) {
-        int distance = Math.abs(newRow - row) + Math.abs(newCol - col);
-        return distance >= getMinAttackRange() && distance <= getMaxAttackRange()&&!getAttackBlocked();
+    public boolean canAttack(unit enemy, int targetRow, int targetCol) {
+        int distance = Math.abs(targetRow - row) + Math.abs(targetCol - col);
+        boolean canAttack = distance >= getMinAttackRange() && distance <= getMaxAttackRange() && !getAttackBlocked();
+        System.out.println("Checking if can attack: " + canAttack + " (distance: " + distance + ")");
+        return canAttack;
     }
 
-    // Method to calculate movement cost based on terrain
     public int getMovementCost(Terrain terrain) {
         switch (terrain.getName()) {
             case "water":
@@ -173,4 +136,36 @@ public abstract class unit {
         this.movementBlocked = false;
         this.attackBlocked = false;
     }
+
+    abstract public boolean isGroundUnit();
+
+    abstract public boolean isAirUnit();
+
+    abstract public boolean canAttackGroundUnit();
+
+    abstract public boolean canAttackAirUnit();
+
+    abstract public int getWaterMovementCosts();
+
+    abstract public int getPlainMovementCosts();
+
+    abstract public int getWoodMovementCosts();
+
+    abstract public int getMountainMovementCosts();
+
+    abstract public double getAntiAirModifier();
+
+    abstract public double getBattleCopterModifier();
+
+    abstract public double getBomberModifier();
+
+    abstract public double getFighterModifier();
+
+    abstract public double getInfantryModifier();
+
+    abstract public double getMechanizedInfantryModifier();
+
+    abstract public double getMobileArtilleryModifier();
+
+    abstract public double getTankModifier();
 }

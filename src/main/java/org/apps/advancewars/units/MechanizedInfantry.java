@@ -3,6 +3,8 @@ package org.apps.advancewars.units;
 public class MechanizedInfantry extends unit {
     public MechanizedInfantry(String team) {
         super("Mechanized Infantry", 100, 10, 3, "/org/apps/advancewars/images/troops/" + team +"/mech.png", team);
+        this.minAttackRange = 1;
+        this.maxAttackRange = 1;
     }
 
     //Wenn isGroundUnit is true, dann kann die Infantry nicht mehr auf die Berge
