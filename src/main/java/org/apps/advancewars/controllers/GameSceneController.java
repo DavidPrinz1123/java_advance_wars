@@ -101,16 +101,13 @@ public class GameSceneController {
         unitController.placeUnit(new MobileArtillery("teamblue"), 9, 17);
         unitController.placeUnit(new Tank("teamblue"), 14, 17);
 
-        hudController.updateTeamRedInfo("Eon Springs Team Red Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
-        hudController.updateTeamBlueInfo("Eon Springs Team Blue Units: Infantry, Bomber, Anti-Air, Tank");
+
     }
 
     private void placeLittleIslandTroops() {
         unitController.placeUnit(new Infantry("teamblue"), 2, 15);
         unitController.placeUnit(new Infantry("teamred"), 2, 14);
 
-        hudController.updateTeamRedInfo("Little Island Team Red Units: Infantry, Bomber, Anti-Air, Tank");
-        hudController.updateTeamBlueInfo("Little Island Team Blue Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
     }
 
     private void placePistonDamTroops() {
@@ -137,9 +134,6 @@ public class GameSceneController {
         unitController.placeUnit(new AntiAir("teamblue"), 13, 16);
         unitController.placeUnit(new MobileArtillery("teamblue"), 12, 17);
         unitController.placeUnit(new Tank("teamblue"), 9, 22);
-
-        hudController.updateTeamRedInfo("Piston Dam Team Red Units: Fighter, Battle Copter, Mechanized Infantry, Mobile Artillery");
-        hudController.updateTeamBlueInfo("Piston Dam Team Blue Units: Infantry, Bomber, Anti-Air, Tank");
     }
 
     public GameHUDController getHUDcontroller() {

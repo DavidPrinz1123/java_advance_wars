@@ -10,12 +10,6 @@ import javafx.stage.Stage;
 public class GameHUDController {
 
     @FXML
-    private VBox teamRedInfo;
-
-    @FXML
-    private VBox teamBlueInfo;
-
-    @FXML
     private Button exitGameButton;
 
     @FXML
@@ -34,18 +28,6 @@ public class GameHUDController {
     public void initialize() {
         surrenderBlueButton.setOnAction(event -> handleSurrender("blue"));
         surrenderRedButton.setOnAction(event -> handleSurrender("red"));
-    }
-
-    public void updateTeamRedInfo(String info) {
-        teamRedInfo.getChildren().clear();
-        Label infoLabel = new Label(info);
-        teamRedInfo.getChildren().add(infoLabel);
-    }
-
-    public void updateTeamBlueInfo(String info) {
-        teamBlueInfo.getChildren().clear();
-        Label infoLabel = new Label(info);
-        teamBlueInfo.getChildren().add(infoLabel);
     }
 
     public void handleExitGame(ActionEvent event) {

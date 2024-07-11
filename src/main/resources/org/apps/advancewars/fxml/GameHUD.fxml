@@ -10,36 +10,21 @@
 <?import javafx.scene.layout.VBox?>
 
 <HBox spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apps.advancewars.controllers.GameHUDController">
-    <VBox fx:id="teamRedInfo" alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
-        <Label alignment="CENTER" text="Team Red Troops">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-        </Label>
-        <!-- More labels or elements to display team red info -->
-    </VBox>
-    <VBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS">
-        <GridPane hgap="10" vgap="10" alignment="CENTER">
-            <Button fx:id="handleEndMove" text="End Turn" onAction="#handleEndMove" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button fx:id="surrenderBlueButton" text="Surrender Blue" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <Button fx:id="surrenderRedButton" text="Surrender Red" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Button fx:id="exitGameButton" text="Exit Game" onAction="#handleExitGame" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <VBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="NEVER">
+        <GridPane hgap="10" vgap="10" alignment="CENTER_LEFT">
+            <Button fx:id="handleEndMove" text="End Turn" onAction="#handleEndMove" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" />
+            <Button fx:id="surrenderBlueButton" text="Surrender Blue" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" />
+            <Button fx:id="surrenderRedButton" text="Surrender Red" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" />
+            <Button fx:id="exitGameButton" text="Exit Game" onAction="#handleExitGame" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-size: 12pt; -fx-padding: 5px; -fx-min-width: 100px;" />
             <columnConstraints>
-                <ColumnConstraints />
                 <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints />
                 <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
             </rowConstraints>
         </GridPane>
-    </VBox>
-    <VBox fx:id="teamBlueInfo" alignment="CENTER_RIGHT" spacing="10" HBox.hgrow="ALWAYS">
-        <Label text="Team Blue Troops">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-        </Label>
-        <!-- More labels or elements to display team blue info -->
     </VBox>
 </HBox>
