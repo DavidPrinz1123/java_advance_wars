@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.apps.advancewars.controllers.VictoryScreenController" alignment="CENTER" spacing="20">
     <ImageView disable="true" fitHeight="477.0" fitWidth="764.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
         <image>
@@ -14,4 +16,8 @@
 
     <Label fx:id="victoryLabel" text=""/>
     <Label text="Congratulations!"/>
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="mapChangeButton" text="Map Change" onAction="#handleMapChange"/>
+        <Button fx:id="exitGameButton" text="Exit Game" onAction="#handleExitGame"/>
+    </HBox>
 </VBox>

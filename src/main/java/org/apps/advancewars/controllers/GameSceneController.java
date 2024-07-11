@@ -16,8 +16,10 @@ public class GameSceneController {
     private MapController mapController;
     private UnitController unitController;
     private GameHUDController hudController;
+    private String mapName; // Neue Klassenvariable für den Map-Namen
 
     public void setMapLayout(String mapName, Stage stage) {
+        this.mapName = mapName; // Speichern des Map-Namens
         BorderPane mainLayout = new BorderPane();
         GridPane gameGridPane = new GridPane();
         mainLayout.setCenter(gameGridPane);
@@ -100,14 +102,11 @@ public class GameSceneController {
         unitController.placeUnit(new AntiAir("teamblue"), 15, 15);
         unitController.placeUnit(new MobileArtillery("teamblue"), 9, 17);
         unitController.placeUnit(new Tank("teamblue"), 14, 17);
-
-
     }
 
     private void placeLittleIslandTroops() {
         unitController.placeUnit(new Infantry("teamblue"), 2, 15);
         unitController.placeUnit(new Infantry("teamred"), 2, 14);
-
     }
 
     private void placePistonDamTroops() {
@@ -146,7 +145,7 @@ public class GameSceneController {
             Parent root = loader.load();
 
             VictoryScreenController victoryScreenController = loader.getController();
-            victoryScreenController.setWinningTeam(winningTeam);
+            victoryScreenController.setWinningTeam(winningTeam, mapName);  // Übergebe mapName
 
             stage.setScene(new Scene(root));
             stage.show();

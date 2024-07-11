@@ -60,7 +60,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/VictoryScreen.fxml"));
             Parent root = loader.load();
             VictoryScreenController controller = loader.getController();
-            controller.setWinningTeam(winningTeam);
+            controller.setWinningTeam(winningTeam, selectedMapName);  // Übergabe des mapName
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle("Victory!");
             primaryStage.show();
@@ -69,7 +69,6 @@ public class MainApp extends Application {
         }
     }
 
-
     public static String getSelectedMapName() {
         return selectedMapName;
     }
@@ -77,5 +76,4 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
