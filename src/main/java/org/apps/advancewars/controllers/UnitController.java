@@ -3,7 +3,6 @@ package org.apps.advancewars.controllers;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import org.apps.advancewars.MainApp;
 import org.apps.advancewars.units.unit;
 import org.apps.advancewars.terrain.Terrain;
 
@@ -19,8 +18,7 @@ public class UnitController {
     private unit selectedUnit;
     private unit selectedField;
     private MapController mapController;
-    private GameSceneController gameScene = new GameSceneController();
-    private GameHUDController gHC;
+    private GameSceneController gameSceneController;
     private String player = "teamred";
 
     public UnitController(GridPane gameGridPane, int tileSize, MapController mapController) {
@@ -28,15 +26,14 @@ public class UnitController {
         this.TILE_SIZE = tileSize;
         this.units = new HashMap<>();
         this.mapController = mapController;
-        this.gHC = gameScene.getHUDcontroller();
     }
 
-    public void setGameController(GameHUDController gameController) {
-        gameController.setUnitController(this);
+    public void setGameSceneController(GameSceneController gameSceneController) {
+        this.gameSceneController = gameSceneController;
     }
 
     public void placeUnit(unit unit, int row, int col) {
-        units.put(unit.getName() + row + "_" + col, unit); // Unique key for each unit
+        units.put(unit.getName() + row + "_" + col, unit);
         unit.setPosition(row, col);
         ImageView imageView = unit.getImageView();
         imageView.setFitWidth(TILE_SIZE);
@@ -81,7 +78,7 @@ public class UnitController {
             if (areAllUnitsBlocked() && !canAnyAttack()) {
                 changePlayer();
             }
-            selectedUnit = null; // Deselect the unit after moving or attacking
+            selectedUnit = null;
         }
     }
 
@@ -94,7 +91,7 @@ public class UnitController {
 
     private boolean canMoveTo(unit unit, int row, int col) {
         if (getUnitAt(row, col) != null) {
-            return false; // Cannot move to a tile occupied by another unit
+            return false;
         }
         Terrain terrain = mapController.getTerrainAt(row, col);
         int movementCost = unit.getMovementCost(terrain);
@@ -190,7 +187,6 @@ public class UnitController {
         System.out.println("Defensive unit " + defensive.getName() + " health after attack: " + defensive.getHealth());
         offensive.setAttackBlocked(true);
         if (defensive.getHealth() <= 0) {
-            // Remove the unit from the map and the grid
             removeUnit(defensive);
             checkVictory();
         }
@@ -200,7 +196,7 @@ public class UnitController {
         String unitKey = unit.getName() + unit.getRow() + "_" + unit.getCol();
         units.remove(unitKey);
         gameGridPane.getChildren().remove(unit.getImageView());
-        System.out.println("Unit removed: " + unitKey); // Debugging line
+        System.out.println("Unit removed: " + unitKey);
     }
 
     private void checkVictory() {
@@ -214,24 +210,19 @@ public class UnitController {
     public boolean canAnyAttack() {
         for (Map.Entry<String, unit> entry : units.entrySet()) {
             unit ownUnit = entry.getValue();
-
             if (ownUnit.getTeam().equals(player) && !ownUnit.getAttackBlocked()) {
                 int row = ownUnit.getRow();
                 int col = ownUnit.getCol();
                 int minAttackRange = ownUnit.getMinAttackRange();
                 int maxAttackRange = ownUnit.getMaxAttackRange();
-
                 for (int i = -maxAttackRange; i <= maxAttackRange; i++) {
                     for (int j = -maxAttackRange; j <= maxAttackRange; j++) {
                         if (Math.abs(i) + Math.abs(j) < minAttackRange || Math.abs(i) + Math.abs(j) > maxAttackRange)
                             continue;
-
                         int targetRow = row + i;
                         int targetCol = col + j;
-
                         if (mapController.isWithinBounds(targetRow, targetCol)) {
                             unit targetUnit = getUnitAt(targetRow, targetCol);
-
                             if (targetUnit != null && !targetUnit.getTeam().equals(player)) {
                                 if (ownUnit.canAttack(targetUnit, targetRow, targetCol)) {
                                     return true;
@@ -246,7 +237,6 @@ public class UnitController {
     }
 
     public String makeInfoString(unit infoUnit) {
-        String infoString = "";
         String unitName = "Einheit : " + infoUnit.getName();
         String unitHealth = "Besitzt : " + infoUnit.getHealth() + " Leben ! ";
         String unitPower = "Hat eine Angriffsstärke von : " + infoUnit.getAttackPower() + " Punkten ";
@@ -259,11 +249,10 @@ public class UnitController {
         } else {
             unitOperationArea = "Wird gegen Luft - und Bodentruppen eingesetzt ";
         }
-        infoString = unitName + "\n" +
+        return unitName + "\n" +
                 unitHealth + "\n" +
                 unitPower + "\n" +
                 unitMovement + "\n" +
                 unitOperationArea;
-        return infoString;
     }
 }

@@ -16,10 +16,10 @@ public class GameSceneController {
     private MapController mapController;
     private UnitController unitController;
     private GameHUDController hudController;
-    private String mapName; // Neue Klassenvariable für den Map-Namen
+    private String mapName;
 
     public void setMapLayout(String mapName, Stage stage) {
-        this.mapName = mapName; // Speichern des Map-Namens
+        this.mapName = mapName;
         BorderPane mainLayout = new BorderPane();
         GridPane gameGridPane = new GridPane();
         mainLayout.setCenter(gameGridPane);
@@ -33,8 +33,8 @@ public class GameSceneController {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/GameHUD.fxml"));
             Parent hudRoot = loader.load();
             hudController = loader.getController();
-            hudController.setUnitController(unitController);  // Set the unit controller in HUD controller
-            hudController.setGameSceneController(this); // Set GameSceneController in HUD controller
+            hudController.setUnitController(unitController);
+            hudController.setGameSceneController(this);
             mainLayout.setBottom(hudRoot);
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,7 +42,6 @@ public class GameSceneController {
 
         // Ensure hudController is initialized before calling its methods
         if (hudController != null) {
-            // Place troops differently based on the selected map
             switch (mapName) {
                 case "EonSprings":
                     placeEonSpringsTroops();
@@ -61,20 +60,17 @@ public class GameSceneController {
             System.err.println("Failed to load HUD controller");
         }
 
-        // Calculate the initial scene size based on the map dimensions
         double initialSceneWidth = mapController.getMapLayout(mapName)[0].length * mapController.getTileSize();
-        double initialSceneHeight = mapController.getMapLayout(mapName).length * mapController.getTileSize() + 100; // Added extra height for HUD
+        double initialSceneHeight = mapController.getMapLayout(mapName).length * mapController.getTileSize() + 100;
 
-        // Set the scene with the main layout
         Scene scene = new Scene(mainLayout, initialSceneWidth, initialSceneHeight);
         stage.setScene(scene);
         stage.setTitle(mapName);
         stage.setMinWidth(initialSceneWidth);
         stage.setMinHeight(initialSceneHeight);
-        stage.setResizable(false); // Make the stage non-resizable
+        stage.setResizable(false);
         stage.show();
 
-        // Add event handler for selecting and moving units
         gameGridPane.setOnMouseClicked(unitController::handleMouseClick);
     }
 
@@ -145,7 +141,7 @@ public class GameSceneController {
             Parent root = loader.load();
 
             VictoryScreenController victoryScreenController = loader.getController();
-            victoryScreenController.setWinningTeam(winningTeam, mapName);  // Übergebe mapName
+            victoryScreenController.setWinningTeam(winningTeam, mapName);
 
             stage.setScene(new Scene(root));
             stage.show();

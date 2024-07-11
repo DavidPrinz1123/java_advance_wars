@@ -3,8 +3,6 @@ package org.apps.advancewars.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameHUDController {
@@ -45,11 +43,13 @@ public class GameHUDController {
 
     @FXML
     private void handleEndMove(ActionEvent event) {
-        unitController.changePlayer();
+        if (unitController != null) {
+            unitController.changePlayer();
+        }
     }
 
     private void handleSurrender(String team) {
-        Stage stage = (Stage) surrenderBlueButton.getScene().getWindow(); // Abrufen der aktuellen Stage
+        Stage stage = (Stage) surrenderBlueButton.getScene().getWindow();
         gameSceneController.endGame(team, stage);
     }
 }

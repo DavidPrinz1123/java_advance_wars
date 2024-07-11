@@ -16,25 +16,33 @@ public class MapSelectionController {
     @FXML
     private Button pistonDamButton;
 
+    @FXML
     public void initialize() {
         // Initialization if needed
     }
 
-    public void handleEonSprings() {
+    @FXML
+    private void handleEonSprings() {
         selectMap("EonSprings");
     }
 
-    public void handleLittleIsland() {
+    @FXML
+    private void handleLittleIsland() {
         selectMap("LittleIsland");
     }
 
-    public void handlePistonDam() {
+    @FXML
+    private void handlePistonDam() {
         selectMap("PistonDam");
     }
 
     private void selectMap(String mapName) {
         MainApp.showGameScene(mapName);
         Stage stage = (Stage) eonSpringsButton.getScene().getWindow();
-        stage.close(); // Close the map selection window
+        if (stage != null) {
+            stage.close();
+        } else {
+            System.err.println("Stage is null, cannot close.");
+        }
     }
 }

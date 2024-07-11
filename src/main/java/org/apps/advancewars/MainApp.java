@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apps.advancewars.controllers.GameSceneController;
+import org.apps.advancewars.controllers.MapSelectionController;
 import org.apps.advancewars.controllers.VictoryScreenController;
 
 import java.io.IOException;
@@ -34,13 +35,19 @@ public class MainApp extends Application {
 
     public static void showMapSelection() {
         try {
-            Parent root = FXMLLoader.load(MainApp.class.getResource("/org/apps/advancewars/fxml/MapSelection.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/MapSelection.fxml"));
+            Parent root = loader.load();
+
+            MapSelectionController controller = loader.getController();
+
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle("Map Selection");
+            primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     public static void showGameScene(String mapName) {
         selectedMapName = mapName;
@@ -48,8 +55,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/GameScene.fxml"));
             Parent root = loader.load();
             GameSceneController controller = loader.getController();
-            Stage stage = new Stage();
-            controller.setMapLayout(mapName, stage);
+            controller.setMapLayout(mapName, primaryStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,7 +66,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/VictoryScreen.fxml"));
             Parent root = loader.load();
             VictoryScreenController controller = loader.getController();
-            controller.setWinningTeam(winningTeam, selectedMapName);  // Übergabe des mapName
+            controller.setWinningTeam(winningTeam, selectedMapName);
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle("Victory!");
             primaryStage.show();
