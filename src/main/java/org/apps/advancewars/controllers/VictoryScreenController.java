@@ -9,6 +9,10 @@ public class VictoryScreenController {
     private Label victoryLabel;
 
     public void setWinningTeam(String winningTeam) {
-        victoryLabel.setText(winningTeam + " wins!");
+        if ("blue".equals(winningTeam)) {
+            victoryLabel.setText("Team Blue Wins!");
+        } else if ("red".equals(winningTeam)) {
+            victoryLabel.setText("Team Red Wins!");
+        }
     }
 }
