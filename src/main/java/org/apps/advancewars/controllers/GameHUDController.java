@@ -24,8 +24,8 @@ public class GameHUDController {
 
     @FXML
     public void initialize() {
-        surrenderBlueButton.setOnAction(event -> handleSurrender("blue"));
-        surrenderRedButton.setOnAction(event -> handleSurrender("red"));
+        surrenderBlueButton.setOnAction(event -> handleSurrender("teamred"));
+        surrenderRedButton.setOnAction(event -> handleSurrender("teamblue"));
     }
 
     public void handleExitGame(ActionEvent event) {
@@ -50,6 +50,7 @@ public class GameHUDController {
 
     private void handleSurrender(String team) {
         Stage stage = (Stage) surrenderBlueButton.getScene().getWindow();
-        gameSceneController.endGame(team, stage);
+        String winningTeam = team.equals("teamblue") ? "teamred" : "teamblue";
+        gameSceneController.endGame(winningTeam, stage);
     }
 }

@@ -48,7 +48,6 @@ public class MainApp extends Application {
         }
     }
 
-
     public static void showGameScene(String mapName) {
         selectedMapName = mapName;
         try {

@@ -25,9 +25,9 @@ public class VictoryScreenController {
 
     public void setWinningTeam(String winningTeam, String mapName) {
         this.mapName = mapName;
-        if ("blue".equals(winningTeam)) {
+        if ("teamblue".equals(winningTeam)) {
             victoryLabel.setText("Team Blue Wins!");
-        } else if ("red".equals(winningTeam)) {
+        } else if ("teamred".equals(winningTeam)) {
             victoryLabel.setText("Team Red Wins!");
         }
     }
