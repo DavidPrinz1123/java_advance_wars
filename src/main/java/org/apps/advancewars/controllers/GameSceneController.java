@@ -3,6 +3,8 @@ package org.apps.advancewars.controllers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -26,6 +28,7 @@ public class GameSceneController {
 
         mapController = new MapController(gameGridPane);
         unitController = new UnitController(gameGridPane, mapController.getTileSize(), mapController);
+        unitController.setGameSceneController(this);
         mapController.setMapLayout(mapName);
 
         // Load the HUD
@@ -148,5 +151,13 @@ public class GameSceneController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showTurnNotification(String team) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Next Turn");
+        alert.setHeaderText(null);
+        alert.setContentText(team + " is now taking their turn!");
+        alert.showAndWait();
     }
 }

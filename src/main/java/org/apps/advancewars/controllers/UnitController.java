@@ -131,11 +131,15 @@ public class UnitController {
             player = "teamblue";
             if (checkRedWinner()) {
                 showVictoryScreen("teamred");
+            } else {
+                gameSceneController.getHUDcontroller().showTurnNotification("Team Blue");
             }
         } else if (player.equals("teamblue")) {
             player = "teamred";
             if (checkBlueWinner()) {
                 showVictoryScreen("teamblue");
+            } else {
+                gameSceneController.getHUDcontroller().showTurnNotification("Team Red");
             }
         }
         unblockUnits();
@@ -254,5 +258,9 @@ public class UnitController {
                 unitPower + "\n" +
                 unitMovement + "\n" +
                 unitOperationArea;
+    }
+
+    public String getCurrentPlayer() {
+        return player;
     }
 }
