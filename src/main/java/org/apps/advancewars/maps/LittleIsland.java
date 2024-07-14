@@ -2,7 +2,6 @@ package org.apps.advancewars.maps;
 
 public class LittleIsland {
     public static final String[][] LAYOUT = {
-            // Fügen Sie das Layout von Map1 hier ein.
             {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water"},
             {"water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "water", "grass", "wood", "grass", "grass", "grass", "wood", "water"},
             {"water", "water", "water", "mountain water", "water", "water", "water", "water", "grass", "turn right down", "street h", "street h", "street h", "street h", "street h", "street h", "little village", "grass", "water"},
