@@ -132,6 +132,27 @@ public abstract class unit {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+    public boolean movementCostsToHighForRange(int actualMovementCosts){
+        boolean toHigh = false;
+        if(actualMovementCosts > movementRange){
+            toHigh = true;
+        }
+                return toHigh;
+    }
+
+
+
     public void reset() {
         this.movementBlocked = false;
         this.attackBlocked = false;

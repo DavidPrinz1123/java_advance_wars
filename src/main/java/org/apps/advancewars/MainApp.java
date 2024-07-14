@@ -33,6 +33,7 @@ public class MainApp extends Application {
         }
     }
 
+
     public static void showMapSelection() {
         try {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/org/apps/advancewars/fxml/MapSelection.fxml"));

@@ -104,8 +104,24 @@ public class GameSceneController {
     }
 
     private void placeLittleIslandTroops() {
-        unitController.placeUnit(new Infantry("teamblue"), 2, 15);
-        unitController.placeUnit(new Infantry("teamred"), 2, 14);
+        unitController.placeUnit(new Infantry("teamred"), 6, 4);
+        unitController.placeUnit(new Bomber("teamred"), 4, 5);
+        unitController.placeUnit(new Fighter("teamred"), 4, 6);
+        unitController.placeUnit(new BattleCopter("teamred"), 5, 4);
+        unitController.placeUnit(new MechanizedInfantry("teamred"), 8, 3);
+        unitController.placeUnit(new Tank("teamred"), 8, 4);
+        unitController.placeUnit(new AntiAir("teamred"), 8, 6);
+        unitController.placeUnit(new MobileArtillery("teamred"), 7, 1);
+
+
+        unitController.placeUnit(new Infantry("teamblue"), 2, 12);
+        unitController.placeUnit(new Bomber("teamblue"), 3, 17);
+        unitController.placeUnit(new Fighter("teamblue"), 3, 16);
+        unitController.placeUnit(new BattleCopter("teamblue"), 2, 14);
+        unitController.placeUnit(new MechanizedInfantry("teamblue"), 4, 16);
+        unitController.placeUnit(new Tank("teamblue"), 4, 13);
+        unitController.placeUnit(new AntiAir("teamblue"), 2, 17);
+        unitController.placeUnit(new MobileArtillery("teamblue"), 3, 15);
     }
 
     private void placePistonDamTroops() {
