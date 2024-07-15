@@ -220,7 +220,7 @@ public class UnitController {
         }
     }
 
-    public boolean canAnyAttack() {
+    public boolean canAnyAttack() {                                      //Prüft ob irgendeine Truppe noch angreifen kann, um Spielerwechsel zu automatisieren
         for (Map.Entry<String, unit> entry : units.entrySet()) {
             unit ownUnit = entry.getValue();
             if (ownUnit.getTeam().equals(player) && !ownUnit.getAttackBlocked()) {
@@ -273,10 +273,11 @@ public class UnitController {
         return player;
     }
 
-    public boolean proofMovementCosts(int targetRow, int targetCol, int row, int col, int height, int width,unit selected) {
+    public boolean proofMovementCosts(int targetRow, int targetCol, int row, int col, int height, int width,unit selected, int actualRow, int actualCol) {
 
         int neighbours [][] = new int [4][2];
         int count = 0;
+        boolean movementCostsOkay = false;
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 if(isOneMovedField(row,col,x,y)){
@@ -286,8 +287,12 @@ public class UnitController {
                 }
             }
         }
-
-        return goIntoDeeperLayer(targetRow,targetCol,neighbours,selected,width,height);
+        int ergebniss[] = new int[4];
+        ergebniss = goIntoDeeperLayer(targetRow,targetCol,neighbours,selected,width,height,actualRow,actualCol,0);
+        if(ergebniss [0] == 1){
+            movementCostsOkay = true;
+        }
+        return movementCostsOkay;
     }
 
     public boolean isOneMovedField (int actualRow, int actualCol, int possibleRow, int possibleCol){  //Gibt zurück ob Bewegung genau 1 groß wäre
@@ -308,16 +313,32 @@ public class UnitController {
         return oneMovedField;
     }
 
-    public boolean goIntoDeeperLayer(int targetRow, int targetCol,int neighbours[][], unit selected, int width , int height){
-    int bestNeighbour [] = findClosestNeighbourToTarget(neighbours,targetRow,targetCol,selected);
-    int movementCosts = selected.getMovementCost(mapController.getTerrainAt(neighbours[bestNeighbour[1]][0],neighbours[bestNeighbour[1]][1]));
+    public int []goIntoDeeperLayer(int targetRow, int targetCol,int neighbours[][], unit selected, int width , int height, int actualRow, int actualCol, int oldMovementCosts){
+    boolean blockedNeighbours [] = {false,false,false,false};
+    int ergebniss[] = new int[4]; 
+    int bestNeighbour [] = findClosestNeighbourToTarget(neighbours,targetRow,targetCol,selected,blockedNeighbours);
+    int movementCosts = selected.getMovementCost(mapController.getTerrainAt(neighbours[bestNeighbour[1]][0],neighbours[bestNeighbour[1]][1])) + oldMovementCosts;
         int row = neighbours[bestNeighbour[1]][0];
         int col = neighbours[bestNeighbour[1]][1];
         if(row == targetRow && col == targetCol && movementCosts <= selected.getMovementRange()){
-            return true;
+            ergebniss[0] =1; //true
+            ergebniss[1] = row;
+            ergebniss[2] = col;
+            ergebniss[3] = 100; //Wenn Algorithmus fertig ist 
+
+            return ergebniss;
         }
     if(movementCosts > selected.getMovementRange()){
+
+        ergebniss[0] = 2; //false
+        ergebniss[1] = row;
+        ergebniss[2] = col;
+        ergebniss[3] = selected.getMovementCost(mapController.getTerrainAt(neighbours[bestNeighbour[1]][0],neighbours[bestNeighbour[1]][1])); //Gibt die dazu addierten movementCosts zurück
+        return ergebniss;
         //Eine Schicht zurück gehen
+        //Es gibt keinen Nachbarn mehr, über den ein Weg zum Ziel möglich wäre
+        //Das bedeutet, dass das als Parameter mitgegebene Feld (actualRow,actualCol) kein möglicher Nachbar mehr des Feldes davor ist
+        //Es wird aus der Nachbarliste gestrichen (blockedNeighbours)
     }
     else {
         //Eine Schicht vorwärst gehen
@@ -326,19 +347,22 @@ public class UnitController {
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 if(isOneMovedField(row,col,x,y)&& x != row && y!= col){
+
                     neighbours[count][0] = x;
                     neighbours[count][1] = y;
                     count++;
                 }
             }
         }
+        ergebniss = goIntoDeeperLayer(targetRow,targetCol,neighbours,selected,width,height,row,col,movementCosts);
+        if(ergebniss[0] == 2){
 
-        goIntoDeeperLayer(targetRow,targetCol,neighbours,selected,width,height);
+        }
     }
-    return false;
+    return ergebniss;
     }
 
-    public int [] findCheapestNeighbour(int favourits[][], unit selected) {
+    public int [] findCheapestNeighbour(int favourits[][], unit selected) {    //Findet den Nachbarn mit den geringsten Bewegungskosten
         int cheapestNeighbourIndex [] = new int [2];
         cheapestNeighbourIndex[0] = 100;
         for(int i = 0;i < 2;i++){
@@ -351,12 +375,12 @@ public class UnitController {
         return cheapestNeighbourIndex;
     }
 
-    public int [] findClosestNeighbourToTarget(int neighbours[][] , int targetRow, int targetCol, unit selected) {
+    public int [] findClosestNeighbourToTarget(int neighbours[][] , int targetRow, int targetCol, unit selected,boolean blocked[]) { //Findet den Nachbarn, der am nächsten vom Ziel entfernt ist
         int [] closestNeighbourIndex = new int [2];
         closestNeighbourIndex[0] = 100;
         for(int i = 0;i < 4;i++){
             int distance = Math.abs(targetRow - neighbours[i][0]) + Math.abs(targetCol - neighbours[i][1]);
-            if(distance < closestNeighbourIndex[0]){
+            if(distance < closestNeighbourIndex[0] && !blocked[i]){
             if(distance == closestNeighbourIndex[0]) {
                 int favourits[][] = new int[2][2];
                 favourits[0][0] = neighbours[closestNeighbourIndex[1]][0];
